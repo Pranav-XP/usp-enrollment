@@ -23,8 +23,10 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('admin'),
             'remember_token' => Str::random(10),
+            'created_at'=>now(),
+            'updated_at'=>now()
         ]);
 
-         User::factory(3)->create();
+        $this->call(RoleSeeder::class);
     }
 }
