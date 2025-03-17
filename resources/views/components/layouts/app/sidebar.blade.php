@@ -22,6 +22,7 @@
                     @endcan
                     @hasrole('admin')
                     <flux:navlist.item icon="list-bullet" :href="route('program.create')" :current="request()->routeIs('program.create')" wire:navigate>{{ __('Manage programmes') }}</flux:navlist.item>
+                    <flux:navlist.item icon="list-bullet" :href="route('course.create')" :current="request()->routeIs('course.create')" wire:navigate>{{ __('Manage courses') }}</flux:navlist.item>
                     @endhasrole
                 </flux:navlist.group>
             </flux:navlist>

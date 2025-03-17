@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Livewire\Admin\Courses;
 use App\Livewire\Auth\ConfirmPassword;
 use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\Login;
@@ -19,6 +20,7 @@ Route::middleware('guest')->group(function () {
 Route::group(['middleware' => ['can:manage users']], function () {
     Route::get('register', Register::class)->name('register');
     Route::get('programs/create', ProgramForm::class)->name('program.create');
+    Route::get('courses/create', Courses::class)->name('course.create');
 });
 
 
