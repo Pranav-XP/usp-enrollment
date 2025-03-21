@@ -11,6 +11,11 @@ use App\Models\Program;
 class CreateProgram extends Component
 {
     public ProgramForm $form;
+    public $programs;
+
+    public function mount(){
+        $this->programs = Program::all();
+    }
 
     public function save(){
         $this->validate();
