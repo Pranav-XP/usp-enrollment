@@ -18,7 +18,7 @@
                     <flux:navlist.item icon="list-bullet" :href="route('courses')" :current="request()->routeIs('courses')" wire:navigate>{{ __('Courses') }}</flux:navlist.item>
                     @endhasrole
                     @can('manage users')
-                    <flux:navlist.item icon="user-plus" :href="route('register')" :current="request()->routeIs('register')" wire:navigate>{{ __('Register Student') }}</flux:navlist.item>
+                    <flux:navlist.item icon="user-plus" :href="route('admin.register-student')" :current="request()->routeIs('admin.register-student')" wire:navigate>{{ __('Register Student') }}</flux:navlist.item>
                     @endcan
                     @hasrole('admin')
                     <flux:navlist.item icon="list-bullet" :href="route('program.create')" :current="request()->routeIs('program.create')" wire:navigate>{{ __('Manage programmes') }}</flux:navlist.item>
