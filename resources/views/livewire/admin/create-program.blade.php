@@ -1,6 +1,6 @@
 <form wire:submit="save" class="flex flex-col gap-6">
-    <flux:heading>Create Program</flux:heading>
-<flux:subheading>Enter program information below.</flux:subheading>
+    <flux:heading size='xl'>Create Program</flux:heading>
+    <flux:subheading>Enter program information below.</flux:subheading>
     <!-- Program Code -->
     <flux:input
         wire:model="form.program_code"
@@ -37,8 +37,7 @@
         :label="__('Duration of program in years')"
         type="number"
         required
-        autocomplete="email"
-        placeholder="email@example.com"
+        placeholder="Duration in years"
     />
 
     <div class="flex items-center justify-end">

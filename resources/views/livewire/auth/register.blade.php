@@ -1,6 +1,7 @@
 <form wire:submit="register" class="flex flex-col gap-6">
     <flux:heading>Register Student</flux:heading>
 <flux:subheading>Register student information below.</flux:subheading>
+
     <!-- First Name -->
     <flux:input
         wire:model="first_name"

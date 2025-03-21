@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Admin;
 
-use App\Livewire\Forms\ProgramForm;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
-
+use App\Livewire\Forms\ProgramForm;
+use App\Models\Program;
 
 #[Layout('components.layouts.app')]
-class Program extends Component
+class CreateProgram extends Component
 {
     public ProgramForm $form;
 
@@ -19,12 +19,11 @@ class Program extends Component
             $this->form->all()
         );
 
-        return $this->redirect('admin.program');
+        return $this->redirect('admin/program');
     }
-
 
     public function render()
     {
-        return view('livewire.admin.program');
+        return view('livewire.admin.create-program');
     }
 }

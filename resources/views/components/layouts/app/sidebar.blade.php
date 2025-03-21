@@ -23,10 +23,10 @@
                     @hasrole('admin')
                     <flux:navlist.item icon="user-plus" :href="route('admin.register-student')" :current="request()->routeIs('admin.register-student')" wire:navigate>{{ __('Register Student') }}</flux:navlist.item>
                     <flux:navlist.item icon="list-bullet" 
-                    :href="route('program.create')" 
-                    :current="request()->routeIs('program.create')" 
+                    :href="route('admin.programmes')" 
+                    :current="request()->routeIs('admin.programmes')" 
                     wire:navigate>{{ __('Manage programmes') }}</flux:navlist.item>
-                    <flux:navlist.item icon="list-bullet" :href="route('course.create')" :current="request()->routeIs('course.create')" wire:navigate>{{ __('Manage courses') }}</flux:navlist.item>
+                    {{-- <flux:navlist.item icon="list-bullet" :href="route('course.create')" :current="request()->routeIs('course.create')" wire:navigate>{{ __('Manage courses') }}</flux:navlist.item> --}}
                     @endhasrole
                 </flux:navlist.group>
             </flux:navlist>

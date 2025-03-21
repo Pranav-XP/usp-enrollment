@@ -5,6 +5,7 @@ use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CourseController;
+use App\Livewire\Admin\CreateProgram;
 use App\Livewire\Auth\Register;
 
 Route::get('/', function () {
@@ -27,8 +28,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
 });
 
-Route::group(['middleware' => ['role:admin']], function () {
+Route::group(['middleware' => ['can:manage app']], function () {
     Route::get('admin/register-student', Register::class)->name('admin.register-student');
+    Route::get('admin/program', CreateProgram::class)->name('admin.programmes');
 });
 
 require __DIR__.'/auth.php';
