@@ -22,4 +22,9 @@ class Program extends Model
         // A program has many students
         return $this->hasMany(Student::class);
     }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'course_program');
+    }
 }

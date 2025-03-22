@@ -11,6 +11,11 @@ class Course extends Model
         'course_code', 'course_title', 'description', 'cost', 'semester_1', 'semester_2',
     ];
 
+    public function programs()
+    {
+        return $this->belongsToMany(Program::class, 'course_program');
+    }
+
     // Define a many-to-many relationship with prerequisites
     public function prerequisites()
     {

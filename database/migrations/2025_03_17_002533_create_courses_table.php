@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id(); // Primary Key
             $table->string('course_code')->unique(); // Unique course code
             $table->string('course_title'); // Course title
+            $table->integer('level'); // Example: 100, 200, 300, etc.
+            $table->foreignId('program_id')->constrained()->onDelete('cascade'); //FK Programs
+
             $table->text('description')->nullable(); // Course description
             $table->decimal('cost', 8, 2); // Course cost
 
