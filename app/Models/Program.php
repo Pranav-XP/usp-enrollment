@@ -21,11 +21,11 @@ class Program extends Model
     public function students()
     {
         // A program has many students
-        return $this->hasMany(Student::class);
+        return $this->hasMany(Student::class)->withTimestamps();
     }
 
     public function courses():BelongsToMany
     {
-        return $this->belongsToMany(Course::class, 'course_program');
+        return $this->belongsToMany(Course::class, 'course_program')->withTimestamps();
     }
 }

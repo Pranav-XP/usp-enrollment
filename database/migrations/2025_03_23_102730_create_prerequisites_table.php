@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('course_prerequisite', function (Blueprint $table) {
+        Schema::create('prerequisites', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('course_id')->constrained('courses')->onDelete('cascade');
-            $table->foreignId('prerequisite_course_id')->constrained('courses')->onDelete('cascade');
+            $table->foreignId('course_id')->constrained()->onDelete('cascade'); // Course that has prerequisites
+            $table->json('prerequisite_groups'); // Stores JSON groups (e.g., [["PH206", "EE224"], ["EE212", "EE225"]])
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('course_prerequisite');
+        Schema::dropIfExists('prerequisites');
     }
 };
