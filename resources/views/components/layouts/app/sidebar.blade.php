@@ -22,14 +22,21 @@
                     {{-- Admin Navigation Links --}}
                     @hasrole('admin')
                     <flux:navlist.item icon="user-plus" :href="route('admin.register-student')" :current="request()->routeIs('admin.register-student')" wire:navigate>{{ __('Register Student') }}</flux:navlist.item>
+                    
                     <flux:navlist.item icon="list-bullet" 
                     :href="route('admin.programmes')" 
                     :current="request()->routeIs('admin.programmes')" 
                     wire:navigate>{{ __('Manage programmes') }}</flux:navlist.item>
-                    <flux:navlist.item icon="list-bullet" 
+                    
+                    <flux:navlist.item icon="clipboard-document-list" 
                     :href="route('admin.course')" 
                     :current="request()->routeIs('admin.course')" 
                     wire:navigate>{{ __('Create course') }}</flux:navlist.item>
+
+                    <flux:navlist.item icon="adjustments-horizontal" 
+                    :href="route('settings.edit')" 
+                    :current="request()->routeIs('settings.edit')" 
+                    wire:navigate>{{ __('SAS Settings') }}</flux:navlist.item>
                     {{-- <flux:navlist.item icon="list-bullet" :href="route('course.create')" :current="request()->routeIs('course.create')" wire:navigate>{{ __('Manage courses') }}</flux:navlist.item> --}}
                     @endhasrole
                 </flux:navlist.group>
