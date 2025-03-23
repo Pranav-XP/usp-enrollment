@@ -76,5 +76,12 @@ class BSESeeder extends Seeder
                 'updated_at' => now(),
             ]);
         }
+        DB::table('prerequisites')->insert([
+            'course_id' => 2,
+            'prerequisite_groups' => json_encode(["CS111"]),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
     }
 }
