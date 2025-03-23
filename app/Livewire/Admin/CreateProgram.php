@@ -24,7 +24,7 @@ class CreateProgram extends Component
             $this->form->all()
         );
 
-        return $this->redirect('admin/program');
+        return $this->redirect('/program');
     }
 
     public function render()

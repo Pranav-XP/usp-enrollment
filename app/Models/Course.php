@@ -3,15 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Course extends Model
 {
      // Fillable properties for mass assignment
      protected $fillable = [
-        'course_code', 'course_title', 'description', 'cost', 'semester_1', 'semester_2',
+        'course_code', 'course_title', 'description', 'cost', 'semester_1', 'semester_2','year'
     ];
 
-    public function programs()
+    public function programs():BelongsToMany
     {
         return $this->belongsToMany(Program::class, 'course_program');
     }

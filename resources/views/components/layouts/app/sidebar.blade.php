@@ -26,6 +26,10 @@
                     :href="route('admin.programmes')" 
                     :current="request()->routeIs('admin.programmes')" 
                     wire:navigate>{{ __('Manage programmes') }}</flux:navlist.item>
+                    <flux:navlist.item icon="list-bullet" 
+                    :href="route('admin.course')" 
+                    :current="request()->routeIs('admin.course')" 
+                    wire:navigate>{{ __('Create course') }}</flux:navlist.item>
                     {{-- <flux:navlist.item icon="list-bullet" :href="route('course.create')" :current="request()->routeIs('course.create')" wire:navigate>{{ __('Manage courses') }}</flux:navlist.item> --}}
                     @endhasrole
                 </flux:navlist.group>

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Auth;
 
+use App\Models\Program;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,8 @@ use Carbon\Carbon;
 #[Layout('components.layouts.app')]
 class Register extends Component
 {
+    public $programs;
+    
     public string $email = '';
     public string $password = '';
     public string $password_confirmation = '';
@@ -25,6 +28,7 @@ class Register extends Component
     public string $last_name = '';
     public string $dob = '';
     public string $phone = '';
+    public $programId = 1;
 
     /**
      * Handle an incoming registration request.
@@ -38,7 +42,6 @@ class Register extends Component
             'last_name' => ['required', 'string', 'max:255'],
             'dob' => ['required', 'date'],
             'phone' => ['required', 'string', 'max:15'],
-
             // User Details
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
@@ -71,10 +74,15 @@ class Register extends Component
             'email' => $validated['email'],
             'dob' => $validated['dob'],
             'phone' => $validated['phone'],
+            'program_id'=>$this->programId,
             'enrollment_year' => $enrollment_year, // Automatically set enrollment year
         ]);
         event(new Registered($user));
 
         $this->redirect(route('dashboard', absolute: false), navigate: true);
+    }
+
+    public function mount(){
+        $this->programs= Program::all();
     }
 }

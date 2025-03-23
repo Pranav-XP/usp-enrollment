@@ -34,6 +34,12 @@
         :placeholder="__('SXXXXXXXX')"
     />
 
+    <flux:select wire:model="programId" placeholder="Assign program">
+        @foreach ($programs as $program)
+            <flux:select.option  value="{{ $program->id }}">{{ $program->name}}</flux:select.option>
+        @endforeach
+    </flux:select>
+
     <!-- Email Address -->
     <flux:input
         wire:model="email"
