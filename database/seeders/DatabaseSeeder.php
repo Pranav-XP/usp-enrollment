@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -27,6 +26,29 @@ class DatabaseSeeder extends Seeder
             'updated_at'=>now()
         ]);
 
+         // Inserting a Bachelors of Software Engineering (BSE) program record
+         DB::table('programs')->insert([
+            'program_code' => 'BSE',
+            'name' => 'Bachelors of Software Engineering',
+            'description' => 'A program focused on developing software engineering skills.',
+            'duration' => 4, // Example: 4 years
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // Inserting a Bachelors of Software Engineering (BSE) program record
+        DB::table('programs')->insert([
+            'program_code' => 'BNS',
+            'name' => 'Bachelor of Networks & Security',
+            'description' => 'A program focused on developing networking and security skills.',
+            'duration' => 4, // Example: 4 years
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+
+
         $this->call(RoleSeeder::class);
+        $this->call(BSESeeder::class);
     }
 }

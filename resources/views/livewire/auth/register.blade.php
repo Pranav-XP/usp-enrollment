@@ -1,6 +1,7 @@
 <form wire:submit="register" class="flex flex-col gap-6">
     <flux:heading>Register Student</flux:heading>
 <flux:subheading>Register student information below.</flux:subheading>
+
     <!-- First Name -->
     <flux:input
         wire:model="first_name"
@@ -32,6 +33,12 @@
         autofocus
         :placeholder="__('SXXXXXXXX')"
     />
+
+    <flux:select wire:model="programId" placeholder="Assign program">
+        @foreach ($programs as $program)
+            <flux:select.option  value="{{ $program->id }}">{{ $program->name}}</flux:select.option>
+        @endforeach
+    </flux:select>
 
     <!-- Email Address -->
     <flux:input

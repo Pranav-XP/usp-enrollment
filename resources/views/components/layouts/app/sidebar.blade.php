@@ -14,14 +14,23 @@
             <flux:navlist variant="outline">
                 <flux:navlist.group :heading="__('Platform')" class="grid">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                    {{-- Student Navigation Links --}}
                     @hasrole('student')
                     <flux:navlist.item icon="list-bullet" :href="route('courses')" :current="request()->routeIs('courses')" wire:navigate>{{ __('Courses') }}</flux:navlist.item>
                     @endhasrole
-                    @can('manage users')
-                    <flux:navlist.item icon="user-plus" :href="route('register')" :current="request()->routeIs('register')" wire:navigate>{{ __('Register Student') }}</flux:navlist.item>
-                    @endcan
+
+                    {{-- Admin Navigation Links --}}
                     @hasrole('admin')
-                    <flux:navlist.item icon="list-bullet" :href="route('program.create')" :current="request()->routeIs('program.create')" wire:navigate>{{ __('Manage programmes') }}</flux:navlist.item>
+                    <flux:navlist.item icon="user-plus" :href="route('admin.register-student')" :current="request()->routeIs('admin.register-student')" wire:navigate>{{ __('Register Student') }}</flux:navlist.item>
+                    <flux:navlist.item icon="list-bullet" 
+                    :href="route('admin.programmes')" 
+                    :current="request()->routeIs('admin.programmes')" 
+                    wire:navigate>{{ __('Manage programmes') }}</flux:navlist.item>
+                    <flux:navlist.item icon="list-bullet" 
+                    :href="route('admin.course')" 
+                    :current="request()->routeIs('admin.course')" 
+                    wire:navigate>{{ __('Create course') }}</flux:navlist.item>
+                    {{-- <flux:navlist.item icon="list-bullet" :href="route('course.create')" :current="request()->routeIs('course.create')" wire:navigate>{{ __('Manage courses') }}</flux:navlist.item> --}}
                     @endhasrole
                 </flux:navlist.group>
             </flux:navlist>
