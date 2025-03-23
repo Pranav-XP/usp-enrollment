@@ -76,5 +76,6 @@ class BSESeeder extends Seeder
                 'updated_at' => now(),
             ]);
         }
+
     }
 }

@@ -46,9 +46,10 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
-
-
         $this->call(RoleSeeder::class);
         $this->call(BSESeeder::class);
+        $this->call(StudentSeeder::class);
+        $this->call(PrerequisiteSeeder::class);
+
     }
 }

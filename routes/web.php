@@ -8,14 +8,21 @@ use App\Http\Controllers\CourseController;
 use App\Livewire\Admin\Courses;
 use App\Livewire\Admin\CreateProgram;
 use App\Livewire\Auth\Register;
+use App\Http\Controllers\EnrolmentController;
 
 /* Route::get('/', function () {
     return view('welcome');
 })->name('home'); */
+Route::get('/check-enrollment', [EnrolmentController::class, 'testEnrollment']);
 
-Route::view('dashboard', 'dashboard')
+Route::get('/dashboard', [EnrolmentController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
+    // Route for enrolling in a course
+    Route::post('/enrol/{courseId}', [EnrolmentController::class, 'enrolStudent'])
+    ->middleware(['auth', 'verified'])
+    ->name('enrol.course');
 
     Route::get('courses', [CourseController::class, 'index'])
     ->middleware(['auth', 'verified'])

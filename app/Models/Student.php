@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Student extends Model
 {
@@ -39,12 +40,21 @@ class Student extends Model
     // Relationship with User (One-to-One)
     public function user() : BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withTimestamps();
     }
 
      // Relationship with Program (Many-to-One)
      public function program()
      {
-         return $this->belongsTo(Program::class); // A student belongs to one program
+         return $this->belongsTo(Program::class)
+         ->withTimestamps(); // A student belongs to one program
+     }
+
+     //Many to Many courses
+     public function courses():BelongsToMany
+     {
+        return $this->belongsToMany(Course::class, 'course_student', 'student_id', 'course_id')
+        ->withPivot('grade', 'status')
+        ->withTimestamps();
      }
 }
