@@ -2,6 +2,16 @@
     <form wire:submit="save" class="flex flex-col gap-6 mb-8">
         <flux:heading size='xl'>Create Course</flux:heading>
         <flux:subheading>Enter course information below.</flux:subheading>
+
+        <flux:checkbox.group wire:model="programId" :label="__('Offered under which courses:')">
+            @foreach ($programs as $program )
+            <flux:checkbox
+            label="{{ $program->name }}"
+            value="{{ $program->id }}" 
+    />
+            @endforeach        
+            
+        </flux:flux:checkbox.group>
         
         <!-- Course Code -->
         <flux:input

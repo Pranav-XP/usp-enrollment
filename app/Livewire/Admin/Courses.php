@@ -12,6 +12,8 @@ class Courses extends Component
     public CourseForm $form;
     public $courses;
     public $programs;
+    public $programId = [];
+
 
     public function mount(){
         $this->courses = Course::all();
@@ -24,6 +26,8 @@ class Courses extends Component
         $course = Course::create(
             $this->form->all()
         );
+
+        $course->programs()->attach($this->programId);
         
         return $this->redirect('/admin/course');
     }
