@@ -9,9 +9,9 @@ use App\Livewire\Admin\Courses;
 use App\Livewire\Admin\CreateProgram;
 use App\Livewire\Auth\Register;
 
-Route::get('/', function () {
+/* Route::get('/', function () {
     return view('welcome');
-})->name('home');
+})->name('home'); */
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
