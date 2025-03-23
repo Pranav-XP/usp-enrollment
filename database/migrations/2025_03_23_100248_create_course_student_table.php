@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('grade', 3, 1)->nullable();
     
             // Enrollment status (enrolled, completed, etc.)
-            $table->string('enrollment_status')->default(EnrolmentStatus::ENROLLED->value);
+            $table->string('status')->default(EnrolmentStatus::ENROLLED->value);
             $table->timestamps();
         });
     }

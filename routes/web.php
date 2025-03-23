@@ -15,9 +15,14 @@ use App\Http\Controllers\EnrolmentController;
 })->name('home'); */
 Route::get('/check-enrollment', [EnrolmentController::class, 'testEnrollment']);
 
-Route::view('dashboard', 'dashboard')
+Route::get('/dashboard', [EnrolmentController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
+    // Route for enrolling in a course
+    Route::post('/enrol/{courseId}', [EnrolmentController::class, 'enrolStudent'])
+    ->middleware(['auth', 'verified'])
+    ->name('enrol.course');
 
     Route::get('courses', [CourseController::class, 'index'])
     ->middleware(['auth', 'verified'])

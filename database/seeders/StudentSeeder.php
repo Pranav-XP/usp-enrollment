@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\EnrolmentStatus;
 use App\Models\User;
 use App\Models\Student;
 use App\Models\Program;
@@ -47,15 +48,23 @@ class StudentSeeder extends Seeder
         // Create the student record
         $student=Student::create($studentData);
 
-         // Example course data (you can retrieve courses from the database)
-         $courses = Course::take(1)->get();  // Fetch 3 example courses from the courses table
-
+         
+         $courses = Course::take(1)->get(); 
          // Attach courses with pivot data (grade and enrollment status)
          foreach ($courses as $course) {
              $student->courses()->attach($course->id, [
                  'grade' => 3.5,  // Example grade
-                 'enrollment_status' => 'enrolled',  // Example status
+                 'status' => EnrolmentStatus::ENROLLED->value,  // Example status
              ]);
          }
+
+         
+/*       //To test CS324
+         $cloud_computing = Course::find(13);
+
+         $student->courses()->attach($cloud_computing->id,[
+            'grade'=>3.0,
+            'status'=>EnrolmentStatus::ENROLLED->value,
+         ]); */
     }
 }
