@@ -8,6 +8,7 @@ use App\Models\Prerequisite;
 use App\Models\Student;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
+use App\Models\Setting;
 
 
 class EnrolmentController extends Controller
@@ -20,6 +21,13 @@ class EnrolmentController extends Controller
 
     // Retrieve the student based on the authenticated user's ID
     $student = Student::where('user_id', $id)->first();
+
+    if(!$student){
+        return view('dashboard');
+    }
+
+    
+    $enrollmentSetting = Setting::where('key', 'users_can_enrol')->value('value');
 
     // Fetch enrolled courses
     $enrolledCourses = $student->courses()->wherePivot('status', EnrolmentStatus::ENROLLED->value)->get();
@@ -34,7 +42,7 @@ class EnrolmentController extends Controller
         return $course;
     });
 
-        return view('dashboard', compact('enrolledCourses','checkedCourses'));
+    return view('dashboard', compact('enrolledCourses','checkedCourses','enrollmentSetting'));
     }
 
     public function enrolStudent(Request $request, $courseId)
@@ -61,7 +69,14 @@ class EnrolmentController extends Controller
     }
 
     function canEnrollInCourse($studentId, $courseId) {
-        // Step 1: Get the student and their enrolled courses
+        $enrollmentSetting = Setting::where('key', 'users_can_enrol')->value('value');
+
+
+        if ($enrollmentSetting == '0') {
+            return false;
+        }
+
+
         $student = Student::find($studentId);
     
         if (!$student) {
@@ -130,7 +145,7 @@ class EnrolmentController extends Controller
     {
         $courseYear = ($course->year)-1; 
 
-        if($courseYear <= 1){
+        if($courseYear <= 0){
             return true;
         }
             // Get all course IDs for the student's current year

@@ -9,10 +9,12 @@ use App\Livewire\Admin\Courses;
 use App\Livewire\Admin\CreateProgram;
 use App\Livewire\Auth\Register;
 use App\Http\Controllers\EnrolmentController;
+use App\Http\Controllers\SettingController;
 
 /* Route::get('/', function () {
     return view('welcome');
 })->name('home'); */
+
 Route::get('/check-enrollment', [EnrolmentController::class, 'testEnrollment']);
 
 Route::get('/dashboard', [EnrolmentController::class, 'dashboard'])
@@ -40,6 +42,8 @@ Route::group(['middleware' => ['can:manage app']], function () {
     Route::get('admin/register-student', Register::class)->name('admin.register-student');
     Route::get('admin/program', CreateProgram::class)->name('admin.programmes');
     Route::get('admin/course', Courses::class)->name('admin.course');
+    Route::get('/settings', [SettingController::class, 'edit'])->name('settings.edit');
+    Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
 });
 
 require __DIR__.'/auth.php';

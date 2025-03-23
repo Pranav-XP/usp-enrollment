@@ -11,6 +11,8 @@
         {{ session('error') }}
     </div>
 @endif
+
+@hasrole('student')
         <flux:heading size="xl">Welcome {{ auth()->user()->name }}</flux:heading>
         <flux:subheading>View courses below.</flux:subheading>
         <div class="p-4">
@@ -39,6 +41,9 @@
 
         <div class="p-4">
             <flux:heading size="xl" class="mb-2">Available Courses</flux:heading>
+            @if($enrollmentSetting == 0)
+            <flux:subheading class="mb-2">Enrolment closed by SAS.</flux:subheading>
+            @else
             <flux:subheading class="mb-2">Enrol below.</flux:subheading>
             
             @foreach ($checkedCourses->groupBy('year') as $year => $courses)
@@ -82,6 +87,7 @@
                     </div>
                 </div>
             @endforeach
+            @endif
         </div>
         
         <!-- Add the JavaScript to toggle the collapse/expand -->
@@ -96,7 +102,12 @@
                 }
             }
         </script>
-        
+    @endhasrole
+
+@hasrole('admin')
+<flux:heading size="xl">Welcome {{ auth()->user()->name }}</flux:heading>
+
+@endrole
 
     </div>
 </x-layouts.app>
