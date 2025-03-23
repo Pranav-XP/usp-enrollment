@@ -39,11 +39,11 @@ class EnrolmentController extends Controller
 
     public function enrolStudent(Request $request, $courseId)
     {
-            // Get the authenticated user
-    $id = Auth::id();
+        // Get the authenticated user
+        $id = Auth::id();
 
-    // Retrieve the student based on the authenticated user's ID
-    $student = Student::where('user_id', $id)->first();
+        // Retrieve the student based on the authenticated user's ID
+         $student = Student::where('user_id', $id)->first();
 
         // Find the course by ID
         $course = Course::findOrFail($courseId);
@@ -69,9 +69,11 @@ class EnrolmentController extends Controller
         }
     
         // Get the student's completed courses (assumes "enrolled" means completed)
-        $completedCourses = $student->courses()
-            ->pluck('course_code')
-            ->toArray();
+        $completedCourses = $student->courses();
+
+        if(!$completedCourses){
+            return false;
+        }
 
         // Step 2: Get the course and its prerequisites
         $course = Course::find($courseId);
@@ -79,9 +81,17 @@ class EnrolmentController extends Controller
         if (!$course) {
             return false; // Course not found
         }
+
+        $yearCondition = $this->checkYearPrerequisite($student,$course);
+
+        if(!$yearCondition){
+            return false;
+        }
+
+        $completedCourses = $student->courses()
+            ->pluck('course_code')
+            ->toArray();
     
-        
-        
         $prerequisiteGroups = Prerequisite::where('course_id', $courseId)->value('prerequisite_groups');// Assuming a one-to-one relationship
         
         if(!$prerequisiteGroups){
@@ -114,6 +124,42 @@ class EnrolmentController extends Controller
         }
     
         return true; // Student meets all prerequisites
+    }
+
+    function checkYearPrerequisite($student, $course)
+    {
+        $courseYear = ($course->year)-1; 
+
+        if($courseYear <= 1){
+            return true;
+        }
+            // Get all course IDs for the student's current year
+        $yearCourses = Course::where('year', $courseYear)->pluck('id')->toArray();
+
+        // Get the student's completed course IDs
+        $completedCourses = $student->courses()->pluck("course_id")->toArray();
+
+
+        // Initialize a counter for completed courses
+        $completedCount = 0;
+
+        foreach ($yearCourses as $yearCourse) {
+            // Since $yearCourse is already an ID, compare it directly
+            if (in_array($yearCourse, $completedCourses)) {
+                $completedCount++;
+            }
+        }
+
+        // Avoid division by zero
+        $totalCourses = count($yearCourses);
+        $completedPercentage = $totalCourses > 0 ? ($completedCount / $totalCourses) * 100 : 0;
+
+        // Check if the student has completed at least 75% of the courses for the current year
+        if ($completedPercentage >= 75) {
+            return true;  // Student can move to the next year or enroll in the course
+        }
+
+        return false;  // Student cannot enroll in the course as prerequisites are not met
     }
     
     public function testEnrollment()

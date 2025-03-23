@@ -23,7 +23,14 @@
                         Enrolled
                 </flux:badge>
                 
-                    <h3 class="text-lg font-medium">{{ $course->course_code }}</h3>
+                    <h3 class="text-lg font-medium">{{ $course->course_code }} -
+
+                        @if($course->semester_1)
+                        Semester 1
+                        @else
+                        Semester 2
+                        @endif
+                    </h3>
                     <p class="text-sm">{{ $course->course_title }}</p>
                 </div>
                 @endforeach
@@ -31,7 +38,8 @@
         </div>
 
         <div class="p-4">
-            <h2 class="text-xl font-semibold mb-6">Available Courses by Year</h2>
+            <flux:heading size="xl" class="mb-2">Available Courses</flux:heading>
+            <flux:subheading class="mb-2">Enrol below.</flux:subheading>
             
             @foreach ($checkedCourses->groupBy('year') as $year => $courses)
                 <div class="mb-8">
