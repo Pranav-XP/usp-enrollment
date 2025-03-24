@@ -56,4 +56,9 @@ class Student extends Model
         ->withPivot('grade', 'status')
         ->withTimestamps();
      }
+
+     public function transactions()
+        {
+            return $this->hasMany(Transaction::class);
+        }
 }

@@ -11,6 +11,7 @@ use App\Livewire\Auth\Register;
 use App\Http\Controllers\EnrolmentController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\TransactionController;
 
 /* Route::get('/', function () {
     return view('welcome');
@@ -34,6 +35,10 @@ Route::get('/dashboard', [EnrolmentController::class, 'dashboard'])
     Route::get('grades', [CourseController::class, 'showGrades'])
     ->middleware(['auth', 'verified'])
     ->name('grades');
+
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions');
+    });
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
