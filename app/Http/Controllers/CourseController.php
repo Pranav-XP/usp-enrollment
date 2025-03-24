@@ -7,6 +7,7 @@ use App\Models\Program;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Student;
 
+
 class CourseController extends Controller
 {
     public function index()
@@ -30,5 +31,19 @@ class CourseController extends Controller
     }
 
     return view('courses', compact('program'));;
+}
+
+public function showGrades()
+{
+
+    // Get the authenticated user
+    $id = Auth::id();
+
+    // Retrieve the student based on the authenticated user's ID
+     $student = Student::where('user_id', $id)->first();
+    // Fetch student and their courses with grades
+    $student = Student::with('courses')->findOrFail($student->id);
+
+    return view('grades', compact('student'));
 }
 }

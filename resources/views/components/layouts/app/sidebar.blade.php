@@ -17,6 +17,7 @@
                     {{-- Student Navigation Links --}}
                     @hasrole('student')
                     <flux:navlist.item icon="list-bullet" :href="route('courses')" :current="request()->routeIs('courses')" wire:navigate>{{ __('Courses') }}</flux:navlist.item>
+                    <flux:navlist.item icon="clipboard-document-check" :href="route('grades')" :current="request()->routeIs('grades')" wire:navigate>{{ __('My Grades') }}</flux:navlist.item>
                     @endhasrole
 
                     {{-- Admin Navigation Links --}}
@@ -37,6 +38,12 @@
                     :href="route('settings.edit')" 
                     :current="request()->routeIs('settings.edit')" 
                     wire:navigate>{{ __('SAS Settings') }}</flux:navlist.item>
+
+                    
+                    <flux:navlist.item icon="pencil" 
+                    :href="route('admin.students')" 
+                    :current="request()->routeIs('admin.students')" 
+                    wire:navigate>{{ __('Manage Grades') }}</flux:navlist.item>
                     {{-- <flux:navlist.item icon="list-bullet" :href="route('course.create')" :current="request()->routeIs('course.create')" wire:navigate>{{ __('Manage courses') }}</flux:navlist.item> --}}
                     @endhasrole
                 </flux:navlist.group>

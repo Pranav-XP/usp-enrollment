@@ -46,8 +46,7 @@ class Student extends Model
      // Relationship with Program (Many-to-One)
      public function program()
      {
-         return $this->belongsTo(Program::class)
-         ->withTimestamps(); // A student belongs to one program
+         return $this->belongsTo(Program::class);
      }
 
      //Many to Many courses
