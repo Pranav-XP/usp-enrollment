@@ -110,6 +110,21 @@
 
 @hasrole('admin')
 <flux:heading size="xl">Welcome {{ auth()->user()->name }}</flux:heading>
+<flux:subheading size="md">The admin features are:</flux:heading>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6">
+    @foreach([
+        ['title' => 'Register Student', 'description' => 'Add new students to the system and manage their details.'],
+        ['title' => 'Manage Program', 'description' => 'Update and configure academic programs.'],
+        ['title' => 'Create Course', 'description' => 'Define new courses and set enrollment requirements.'],
+        ['title' => 'SAS Settings', 'description' => 'Configure system-wide academic settings.'],
+        ['title' => 'Manage Grades', 'description' => 'Review and update student grades.']
+    ] as $feature)
+        <div class="p-6 bg-white border rounded-lg shadow">
+            <h3 class="text-lg font-semibold text-gray-700">{{ $feature['title'] }}</h3>
+            <p class="text-sm text-gray-500 mt-2">{{ $feature['description'] }}</p>
+        </div>
+    @endforeach
+</div>
 
 @endrole
 
