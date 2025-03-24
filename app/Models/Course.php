@@ -25,4 +25,10 @@ class Course extends Model
                     ->withTimestamps();
     }
 
+    // Define the relationship between Course and Prerequisite
+    public function prerequisites()
+    {
+        return $this->hasMany(Prerequisite::class, 'course_id'); // assuming 'course_id' is the foreign key
+    }
+
 }

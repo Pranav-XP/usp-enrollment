@@ -16,7 +16,7 @@ class EnrolmentController extends Controller
 
     public function dashboard()
     {
-        // Get the authenticated user
+    // Get the authenticated user
     $id = Auth::id();
 
     // Retrieve the student based on the authenticated user's ID

@@ -50,10 +50,14 @@
                 <div class="mb-8">
                     
                     <!-- Collapsible Year Section -->
-                    <button class="w-full cursor-pointer text-lg font-medium text-left bg-gray-200 p-2 rounded-lg hover:bg-gray-300 focus:outline-none dark:bg-zinc-600 dark:hover:bg-zinc-500"
-                            onclick="toggleCourses({{ $year }})">
-                        Year {{ $year }}
-                    </button>
+                    <button 
+                    class="w-full dark:bg-slate-700 bg-gray-200 p-2 mb-2 rounded-md cursor-pointer text-left text-2xl font-semibold text-teal-800 dark:text-teal-300 flex items-center justify-between"
+                    onclick="toggleCourses({{ $year }})">
+                    <span>Year {{ $year }}</span>
+                    <span id="icon-{{ $year }}" class="transition-transform duration-200">
+                        <flux:icon.chevron-up-down />
+                    </span>
+                </button>
         
                     <!-- Courses for this year, initially hidden -->
                     <div id="courses-year-{{ $year }}" class="space-y-4 mt-4 hidden">
@@ -66,7 +70,7 @@
                                     </div>
                                     <div>
                                         @if(!$course->prerequisites_met)
-                                        <flux:badge color="red" variant="solid">
+                                        <flux:badge color="red" variant="solid" size="sm" icon="exclamation-triangle">
                                             Cannot Enrol
                                         </flux:badge>
                                         @else
