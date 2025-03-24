@@ -19,7 +19,6 @@ class StudentSeeder extends Seeder
         // If you don't, create them first using a separate seeder
         $program = Program::first();  // Assuming a program already exists in the 'programs' table
 
-        // Example student data
         $studentData = [
             'user_id' => null,  // Will be set later to the created User ID
             'student_id' => 'S11209162', // Unique student ID
@@ -55,6 +54,44 @@ class StudentSeeder extends Seeder
              $student->courses()->attach($course->id, [
                  'grade' => 3.5,  // Example grade
                  'status' => EnrolmentStatus::ENROLLED->value,  // Example status
+             ]);
+         }
+
+         $studentData2 = [
+            'user_id' => null,  // Will be set later to the created User ID
+            'student_id' => 'S11210082', // Unique student ID
+            'first_name' => 'Aryan',
+            'last_name' => 'Sharma',
+            'dob' => '2003-04-08',  // Date of Birth
+            'email' => 's11210082@student.usp.ac.fj',
+            'phone' => '7777777',
+            'program_id' => 2,  // Optional: assign to an existing program
+            'enrollment_year' => Carbon::now()->year,  // Current year
+        ];
+
+        // Create the user for this student
+        $user2 = User::create([
+            'name' => $studentData2['first_name'] . ' ' . $studentData['last_name'],
+            'email' => $studentData2['email'],
+            'password' => Hash::make('S11210082'),  // Default password
+        ]);
+
+       
+        $user2->assignRole('student');
+
+        // Set the user_id for the student data
+        $studentData2['user_id'] = $user->id;
+
+        // Create the student record
+        $student2=Student::create($studentData2);
+
+         
+         $courses = Course::take(1)->get(); 
+         // Attach courses with pivot data (grade and enrollment status)
+         foreach ($courses as $course) {
+             $student2->courses()->attach($course->id, [
+                 'grade' => 3.5,  // Example grade
+                 'status' => EnrolmentStatus::COMPLETED->value,  // Example status
              ]);
          }
 
