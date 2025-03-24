@@ -21,6 +21,7 @@ class EnrolmentController extends Controller
 
     // Retrieve the student based on the authenticated user's ID
     $student = Student::where('user_id', $id)->first();
+    $programId = $student ? $student->program_id : null;
 
     if(!$student){
         return view('dashboard');
@@ -29,7 +30,6 @@ class EnrolmentController extends Controller
     
     $enrollmentSetting = Setting::where('key', 'users_can_enrol')->value('value');
 
-    // Fetch enrolled courses
 // Fetch the enrolled courses
 $enrolledCourses = $student->courses()->wherePivot('status', EnrolmentStatus::ENROLLED->value)->get();
 
@@ -39,8 +39,11 @@ $completedCourses = $student->courses()->wherePivot('status', EnrolmentStatus::C
 // Combine both enrolled and completed courses' IDs
 $excludedCourseIds = $enrolledCourses->pluck('id')->merge($completedCourses->pluck('id'))->toArray();
 
-// Fetch courses available for enrollment (excluding already enrolled and completed courses)
-$availableCourses = Course::whereNotIn('id', $excludedCourseIds)->get();
+$availableCourses = Course::whereNotIn('id', $excludedCourseIds)
+    ->whereHas('programs', function ($query) use ($programId) {
+        $query->where('program_id', $programId);
+    })
+    ->get();
 
      // Check prerequisites for each course and store the result
      $checkedCourses = $availableCourses->map(function ($course) use ($student) {

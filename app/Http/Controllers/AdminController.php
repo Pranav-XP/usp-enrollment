@@ -33,9 +33,11 @@ class AdminController extends Controller
             $grades = $request->input('grades'); // Grading input from form
 
             foreach ($grades as $courseId => $grade) {
+                $status = $grade < 3.0 ? EnrolmentStatus::FAILED->value : EnrolmentStatus::COMPLETED->value;
+            
                 $student->courses()->updateExistingPivot($courseId, [
                     'grade' => $grade,
-                    'status' => EnrolmentStatus::COMPLETED->value, // Change the status to completed
+                    'status' => $status,
                 ]);
             }
 

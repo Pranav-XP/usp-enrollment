@@ -71,7 +71,7 @@ class StudentSeeder extends Seeder
 
         // Create the user for this student
         $user2 = User::create([
-            'name' => $studentData2['first_name'] . ' ' . $studentData['last_name'],
+            'name' => $studentData2['first_name'] . ' ' . $studentData2['last_name'],
             'email' => $studentData2['email'],
             'password' => Hash::make('S11210082'),  // Default password
         ]);

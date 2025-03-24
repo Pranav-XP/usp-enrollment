@@ -32,6 +32,9 @@
                                     <option value="3.0" {{ old('grades.' . $course->id, $course->pivot->grade) == '3.0' ? 'selected' : '' }}>B</option>
                                     <option value="2.5" {{ old('grades.' . $course->id, $course->pivot->grade) == '2.5' ? 'selected' : '' }}>C+</option>
                                     <option value="2.0" {{ old('grades.' . $course->id, $course->pivot->grade) == '2.0' ? 'selected' : '' }}>C</option>
+                                    <option value="2.0" {{ old('grades.' . $course->id, $course->pivot->grade) == '1.5' ? 'selected' : '' }}>R</option>
+                                    <option value="2.0" {{ old('grades.' . $course->id, $course->pivot->grade) == '1.0' ? 'selected' : '' }}>D</option>
+                                    <option value="2.0" {{ old('grades.' . $course->id, $course->pivot->grade) == '0' ? 'selected' : '' }}>E</option>
                                 </select>
                                 </td>
                             </tr>
