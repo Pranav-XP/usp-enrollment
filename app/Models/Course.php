@@ -31,4 +31,9 @@ class Course extends Model
         return $this->hasMany(Prerequisite::class, 'course_id'); // assuming 'course_id' is the foreign key
     }
 
+    public function transactions()
+        {
+            return $this->hasMany(Transaction::class);
+        }
+
 }
