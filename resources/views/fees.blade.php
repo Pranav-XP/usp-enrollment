@@ -37,6 +37,9 @@
                 @endforeach
             </tbody>
         </table>
+        <p class="text-lg font-semibold text-gray-800 dark:text-white mt-4">
+            Total Amount: <span class="text-teal-600 dark:text-teal-400">${{ number_format($totalAmount, 2) }}</span>
+        </p>
     </div> 
     </div>
 </x-layouts.app>

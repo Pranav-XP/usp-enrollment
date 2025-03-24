@@ -17,6 +17,9 @@ class TransactionController extends Controller
         $student = Student::where('user_id', $id)->first();
         $transactions = $student->transactions()->with('course')->latest()->get();
 
-        return view('fees', compact('transactions'));
+        // Calculate total amount
+$totalAmount = $transactions->sum('amount');
+
+        return view('fees', compact('transactions','totalAmount'));
     }
 }
