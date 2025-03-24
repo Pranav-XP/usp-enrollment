@@ -30,10 +30,17 @@ class EnrolmentController extends Controller
     $enrollmentSetting = Setting::where('key', 'users_can_enrol')->value('value');
 
     // Fetch enrolled courses
-    $enrolledCourses = $student->courses()->wherePivot('status', EnrolmentStatus::ENROLLED->value)->get();
+// Fetch the enrolled courses
+$enrolledCourses = $student->courses()->wherePivot('status', EnrolmentStatus::ENROLLED->value)->get();
 
-    // Fetch courses available for enrollment (excluding already enrolled courses)
-    $availableCourses = Course::whereNotIn('id', $enrolledCourses->pluck('id'))->get();
+// Fetch the completed courses
+$completedCourses = $student->courses()->wherePivot('status', EnrolmentStatus::COMPLETED->value)->get();
+
+// Combine both enrolled and completed courses' IDs
+$excludedCourseIds = $enrolledCourses->pluck('id')->merge($completedCourses->pluck('id'))->toArray();
+
+// Fetch courses available for enrollment (excluding already enrolled and completed courses)
+$availableCourses = Course::whereNotIn('id', $excludedCourseIds)->get();
 
      // Check prerequisites for each course and store the result
      $checkedCourses = $availableCourses->map(function ($course) use ($student) {
