@@ -132,5 +132,42 @@ class PrerequisiteSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
+
+        //BNS PREREQUISITES
+        DB::table('prerequisites')->insert([
+            'course_id' => 33,
+            'prerequisite_groups' => json_encode(["CS111","CS150"]),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        DB::table('prerequisites')->insert([
+            'course_id' => 34,
+            'prerequisite_groups' => json_encode(["CS215"]),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        DB::table('prerequisites')->insert([
+            'course_id' => 35,
+            'prerequisite_groups' => json_encode(["CS215"]),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        DB::table('prerequisites')->insert([
+            'course_id' => 36,
+            'prerequisite_groups' => json_encode(["CS310"]),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        DB::table('prerequisites')->insert([
+            'course_id' => 30,
+            'prerequisite_groups' => json_encode(["CS324"]),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
     }
 }
