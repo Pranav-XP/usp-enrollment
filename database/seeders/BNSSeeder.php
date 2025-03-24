@@ -17,7 +17,7 @@ class BNSSeeder extends Seeder
             //YEAR 1
             //1['code' => 'CS111', 'title' => 'Introduction to Computing Science', 'year' => 1, 'cost' => 500, 'semester_1' => true, 'semester_2' => false],
             //2['code' => 'CS112', 'title' => 'Programming Fundamentals', 'year' => 1, 'cost' => 500, 'semester_1' => true, 'semester_2' => false],
-            ['code' => 'CS150', 'title' => 'Computer Systems & Organization', 'year' => 1, 'cost' => 500, 'semester_1' => false, 'semester_2' => true],
+            ['code' => 'CS150', 'title' => 'Introduction to Computer Networks & Security', 'year' => 1, 'cost' => 500, 'semester_1' => false, 'semester_2' => true],
             //4['code' => 'MA111', 'title' => 'Mathematics for Computing', 'year' => 1, 'cost' => 500, 'semester_1' => true, 'semester_2' => false],
             //5['code' => 'MA161', 'title' => 'Discrete Mathematics', 'year' => 1, 'cost' => 500, 'semester_1' => false, 'semester_2' => true],
             //6['code' => 'MG101', 'title' => 'Introduction to Management', 'year' => 1, 'cost' => 500, 'semester_1' => true, 'semester_2' => false],
@@ -28,7 +28,7 @@ class BNSSeeder extends Seeder
             //YEAR 2
             //10['code' => 'CS211', 'title' => 'Data Structures and Algorithms', 'year' => 2, 'cost' => 600, 'semester_1' => true, 'semester_2' => false],
             //11['code' => 'CS214', 'title' => 'Algorithm Analysis', 'year' => 2, 'cost' => 600, 'semester_1' => false, 'semester_2' => true],
-            ['code' => 'CS215', 'title' => 'Software Engineering Principles', 'year' => 2, 'cost' => 600, 'semester_1' => true, 'semester_2' => false],
+            ['code' => 'CS215', 'title' => 'Computer Communications & Management', 'year' => 2, 'cost' => 600, 'semester_1' => true, 'semester_2' => false],
             //12['code' => 'CS218', 'title' => 'Database Management Systems', 'year' => 2, 'cost' => 600, 'semester_1' => false, 'semester_2' => true],
             //13['code' => 'CS219', 'title' => 'Operating Systems', 'year' => 2, 'cost' => 600, 'semester_1' => true, 'semester_2' => false],
             //16['code' => 'IS221', 'title' => 'Information Systems Analysis', 'year' => 2, 'cost' => 600, 'semester_1' => false, 'semester_2' => true],
@@ -38,10 +38,10 @@ class BNSSeeder extends Seeder
             //YEAR 3
             //19['code' => 'CS310', 'title' => 'Advanced Software Engineering', 'year' => 3, 'cost' => 700, 'semester_1' => false, 'semester_2' => true],
             //20['code' => 'CS311', 'title' => 'Artificial Intelligence', 'year' => 3, 'cost' => 700, 'semester_1' => true, 'semester_2' => false],
-            ['code' => 'CS317', 'title' => 'Computer Networks', 'year' => 3, 'cost' => 700, 'semester_1' => false, 'semester_2' => true],
+            ['code' => 'CS317', 'title' => 'Computer & Network Security', 'year' => 3, 'cost' => 700, 'semester_1' => false, 'semester_2' => true],
             //21['code' => 'CS324', 'title' => 'Machine Learning', 'year' => 3, 'cost' => 700, 'semester_1' => true, 'semester_2' => false],
-            ['code' => 'CS350', 'title' => 'Cybersecurity', 'year' => 3, 'cost' => 700, 'semester_1' => false, 'semester_2' => true],
-            ['code' => 'CS351', 'title' => 'Cloud Computing', 'year' => 3, 'cost' => 700, 'semester_1' => true, 'semester_2' => false],
+            ['code' => 'CS350', 'title' => 'Wireless Networks', 'year' => 3, 'cost' => 700, 'semester_1' => false, 'semester_2' => true],
+            ['code' => 'CS351', 'title' => 'Network Design & Administration', 'year' => 3, 'cost' => 700, 'semester_1' => true, 'semester_2' => false],
             //23['code' => 'CS352', 'title' => 'Software Testing', 'year' => 3, 'cost' => 700, 'semester_1' => false, 'semester_2' => true],
             //26['code' => 'IS333', 'title' => 'IT Project Management', 'year' => 3, 'cost' => 700, 'semester_1' => true, 'semester_2' => false],
             
