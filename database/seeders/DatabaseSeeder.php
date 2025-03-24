@@ -49,6 +49,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SettingSeeder::class);
         $this->call(RoleSeeder::class);
         $this->call(BSESeeder::class);
+        $this->call(BNSSeeder::class);
         $this->call(StudentSeeder::class);
         $this->call(PrerequisiteSeeder::class);
 

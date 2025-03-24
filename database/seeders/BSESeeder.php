@@ -14,7 +14,6 @@ class BSESeeder extends Seeder
     public function run(): void
     {
           // List of courses with required details
-          // List of courses with required details
         $courses = [
             ['code' => 'CS111', 'title' => 'Introduction to Computing Science', 'year' => 1, 'cost' => 500, 'semester_1' => true, 'semester_2' => false],
             ['code' => 'CS112', 'title' => 'Data Structures & Algorithms', 'year' => 1, 'cost' => 500, 'semester_1' => false, 'semester_2' => true],
