@@ -10,6 +10,7 @@ use App\Livewire\Admin\CreateProgram;
 use App\Livewire\Auth\Register;
 use App\Http\Controllers\EnrolmentController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\AdminController;
 
 /* Route::get('/', function () {
     return view('welcome');
@@ -44,6 +45,9 @@ Route::group(['middleware' => ['can:manage app']], function () {
     Route::get('admin/course', Courses::class)->name('admin.course');
     Route::get('/settings', [SettingController::class, 'edit'])->name('settings.edit');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
+    Route::get('/admin/students', [AdminController::class, 'showStudentsList'])->name('admin.students');
+    Route::get('/admin/students/{studentId}', [AdminController::class, 'showGradeForm'])->name('admin.students.gradeForm');
+    Route::put('/admin/students/{studentId}/grade', [AdminController::class, 'updateGrades'])->name('admin.students.updateGrade');
 });
 
 require __DIR__.'/auth.php';

@@ -37,6 +37,12 @@
                     :href="route('settings.edit')" 
                     :current="request()->routeIs('settings.edit')" 
                     wire:navigate>{{ __('SAS Settings') }}</flux:navlist.item>
+
+                    
+                    <flux:navlist.item icon="pencil" 
+                    :href="route('admin.students')" 
+                    :current="request()->routeIs('admin.students')" 
+                    wire:navigate>{{ __('Manage Grades') }}</flux:navlist.item>
                     {{-- <flux:navlist.item icon="list-bullet" :href="route('course.create')" :current="request()->routeIs('course.create')" wire:navigate>{{ __('Manage courses') }}</flux:navlist.item> --}}
                     @endhasrole
                 </flux:navlist.group>
