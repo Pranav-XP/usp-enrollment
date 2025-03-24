@@ -9,6 +9,8 @@ use App\Models\Student;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use App\Models\Setting;
+use App\Models\Transaction;
+use Illuminate\Support\Str;
 
 
 class EnrolmentController extends Controller
@@ -73,6 +75,14 @@ $availableCourses = Course::whereNotIn('id', $excludedCourseIds)
 
         // Enrol the student in the course
         $student->courses()->attach($course->id, ['status' => EnrolmentStatus::ENROLLED->value]);  // Adjust if necessary based on your pivot table
+
+        Transaction::create([
+            'student_id'       => $student->id,
+            'course_id'        => $course->id,
+            'reference_number' => Str::uuid(), // Generate a unique reference
+            'amount'           => $course->cost, // Fetch course cost
+            'status'           => 'completed', // Default status
+        ]);
 
         // Redirect back to the dashboard with success message
         return redirect()->route('dashboard')->with('success', 'You have successfully enrolled in the course.');
