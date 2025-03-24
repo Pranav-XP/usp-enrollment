@@ -17,6 +17,7 @@
                     {{-- Student Navigation Links --}}
                     @hasrole('student')
                     <flux:navlist.item icon="list-bullet" :href="route('courses')" :current="request()->routeIs('courses')" wire:navigate>{{ __('Courses') }}</flux:navlist.item>
+                    <flux:navlist.item icon="clipboard-document-check" :href="route('grades')" :current="request()->routeIs('grades')" wire:navigate>{{ __('My Grades') }}</flux:navlist.item>
                     @endhasrole
 
                     {{-- Admin Navigation Links --}}

@@ -31,6 +31,10 @@ Route::get('/dashboard', [EnrolmentController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])
     ->name('courses');
 
+    Route::get('grades', [CourseController::class, 'showGrades'])
+    ->middleware(['auth', 'verified'])
+    ->name('grades');
+
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
