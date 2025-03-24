@@ -80,7 +80,7 @@ class StudentSeeder extends Seeder
         $user2->assignRole('student');
 
         // Set the user_id for the student data
-        $studentData2['user_id'] = $user->id;
+        $studentData2['user_id'] = $user2->id;
 
         // Create the student record
         $student2=Student::create($studentData2);
