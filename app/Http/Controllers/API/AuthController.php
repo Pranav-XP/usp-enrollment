@@ -117,7 +117,8 @@ class AuthController extends Controller
             $validateUser = Validator::make($request->all(), 
             [
                 'email' => 'required|email',
-                'password' => 'required'
+                'password' => 'required',
+                'device_name' => 'required',
             ]);
 
             if($validateUser->fails()){
@@ -135,12 +136,15 @@ class AuthController extends Controller
                 ], 401);
             }
 
-            $user = User::where('email', $request->email)->first();
+            $user = User::where('email', $request->email)->with('student')->first();
+
 
             return response()->json([
                 'status' => true,
                 'message' => 'User Logged In Successfully',
-                'token' => $user->createToken("API TOKEN")->plainTextToken
+                'user'=> $user,
+                'student'=>$user->student,
+                'token' => $user->createToken($request->device_name)->plainTextToken,
             ], 200);
 
         } catch (\Throwable $th) {
