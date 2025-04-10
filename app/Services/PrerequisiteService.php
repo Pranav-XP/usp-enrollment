@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Course;
+use App\Models\Prerequisite;
 
 class PrerequisiteService
 {
@@ -15,19 +16,59 @@ class PrerequisiteService
     }
 
     /**
-     * Check if prerequisites are met based on the conditions.
-     * @param array $prerequisiteGroups
-     * @param array $completedCourses
+     * Check if the student meets the prerequisites for a given course.
+     *
+     * @param \App\Models\Course $course
+     * @param \App\Models\Student $student
      * @return bool
      */
-    public function checkPrerequisites($prerequisiteGroups, $completedCourses)
+    public function checkCoursePrerequisites($course, $student)
     {
-        foreach ($prerequisiteGroups as $group) {
+        // Get completed courses for the student
+        $completedCourses = $student->courses()
+            ->pluck('course_code')
+            ->toArray();
+
+        if (!$completedCourses) {
+            return false;
+        }
+
+        if (!$course) {
+            return false;
+        }
+
+
+        // Check if the student meets the year prerequisite
+        $yearCondition = $this->checkYearPrerequisite($student, $course);
+
+        if (!$yearCondition) {
+            return false;
+        }
+
+        // Get prerequisite groups for the course
+        $prerequisiteGroups = Prerequisite::where('course_id', $course->id)->value('prerequisite_groups');
+
+        if (!$prerequisiteGroups) {
+            return true; // No prerequisites to check, so return true
+        }
+
+        // Decode JSON into array
+        $requiredCourses = $prerequisiteGroups;
+
+
+
+        $isMet = $this->checkPrerequisites($completedCourses, $requiredCourses);  // Use the isGroupMet function here
+        return $isMet && $yearCondition;
+    }
+
+    protected function checkPrerequisites($studentCourses, $requiredCourses)
+    {
+        foreach ($requiredCourses as $group) {
             if (is_array($group)) {
-                // OR condition: At least one course in the group must be completed
+                // OR condition: At least one of these courses must be completed
                 $meetsCondition = false;
-                foreach ($group as $requiredCourse) {
-                    if (in_array($requiredCourse, $completedCourses)) {
+                foreach ($group as $course) {
+                    if (in_array($course, $studentCourses)) {
                         $meetsCondition = true;
                         break;
                     }
@@ -36,17 +77,16 @@ class PrerequisiteService
                     return false; // Student does not meet this OR condition
                 }
             } else {
-                // AND condition: Every course in the list must be completed
-                if (!in_array($group, $completedCourses)) {
-                    return false; // Student did not complete a required course
+                // AND condition: Every required course must be completed
+                if (!in_array($group, $studentCourses)) {
+                    return false;
                 }
             }
         }
-
-        return true; // Student meets all prerequisites
+        return true; // Student meets all prerequisite groups
     }
 
-    function checkYearPrerequisite($student, $course)
+    protected function checkYearPrerequisite($student, $course)
     {
         $courseYear = ($course->year) - 1;
 

@@ -48,7 +48,7 @@ class EnrolmentController extends Controller
                 $course = Course::findOrFail($courseId);
 
                 // Check if prerequisites are met
-                $prerequisitesMet = $this->checkCoursePrerequisites($course, $student);
+                $prerequisitesMet = $this->prerequisiteService->checkCoursePrerequisites($course, $student);
 
 
                 if ($prerequisitesMet) {
@@ -95,102 +95,60 @@ class EnrolmentController extends Controller
         }
     }
 
-
-    /**
-     * Check if the student meets the prerequisites for a given course.
-     *
-     * @param \App\Models\Course $course
-     * @param \App\Models\Student $student
-     * @return bool
-     */
-    protected function checkCoursePrerequisites($course, $student)
+    public function check(Request $request)
     {
-        // Get completed courses for the student
+        $request->validate([
+            'course_id' => 'required|exists:courses,id',
+        ]);
+
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Unauthenticated'
+            ], 401);
+        }
+
+        $student = $user->student;
+
+        if (!$student) {
+            return response()->json([
+                'message' => 'Student not found'
+            ], 404);
+        }
+
+        $course = Course::find($request->course_id);
+
+        if (!$course) {
+            return response()->json([
+                'message' => 'Course not found'
+            ], 404);
+        }
+
+        // Get completed courses for the student (by course code)
         $completedCourses = $student->courses()
             ->pluck('course_code')
             ->toArray();
 
-        if (!$completedCourses) {
-            return false;
-        }
+        // Check if the student already completed this course
+        $alreadyCompleted = in_array($course->course_code, $completedCourses);
 
-        if (!$course) {
-            return false;
-        }
+        // Check if prerequisites are met
+        $prerequisitesMet = $this->checkCoursePrerequisites($course, $student);
 
-        // Check if the student meets the year prerequisite
-        $yearCondition = $this->prerequisiteService->checkYearPrerequisite($student, $course);
+        $eligible = !$alreadyCompleted && $prerequisitesMet;
 
-        if (!$yearCondition) {
-            return false;
-        }
-
-        // Get prerequisite groups for the course
-        $requiredCourses = Prerequisite::where('course_id', $course->id)->value('prerequisite_groups');
-
-        if (!$requiredCourses) {
-            return true; // No prerequisites to check, so return true
-        }
-
-
-        // Step 3: Check if prerequisites are met using the isGroupMet function
-        foreach ($requiredCourses as $group) {
-            $isMet = $this->checkPrerequisites($completedCourses, $group);  // Use the isGroupMet function here
-
-            if (!$isMet) {
-                return false; // Student does not meet the prerequisites for this group
-            }
-        }
-
-        return true; // Student meets all prerequisites
-    }
-
-    function checkPrerequisites($studentCourses, $requiredCourses)
-    {
-        foreach ($requiredCourses as $group) {
-            if (is_array($group)) {
-                // OR condition: At least one of these courses must be completed
-                $meetsCondition = false;
-                foreach ($group as $course) {
-                    if (in_array($course, $studentCourses)) {
-                        $meetsCondition = true;
-                        break;
-                    }
-                }
-                if (!$meetsCondition) {
-                    return false; // Student does not meet this OR condition
-                }
-            } else {
-                // AND condition: Every required course must be completed
-                if (!in_array($group, $studentCourses)) {
-                    return false;
-                }
-            }
-        }
-        return true; // Student meets all prerequisite groups
-    }
-
-    // Function to check if the group of courses is met
-    function isGroupMet($group, $completedCourses)
-    {
-        if (is_array($group)) {
-            // If any course in the OR group is completed, it's met
-            foreach ($group as $code) {
-                foreach ($completedCourses as $course) {
-                    if ($course === $code) {
-                        return true;
-                    }
-                }
-            }
-        } else {
-            // Check if the single course code is completed
-            foreach ($completedCourses as $course) {
-                if ($course === $group) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return response()->json([
+            'eligible' => $eligible,
+            'already_completed' => $alreadyCompleted,
+            'prerequisites_met' => $prerequisitesMet,
+            'message' => $eligible
+                ? 'Student is eligible for this course'
+                : (
+                    $alreadyCompleted
+                    ? 'Student has already completed this course'
+                    : 'Prerequisites not met for this course'
+                )
+        ]);
     }
 }

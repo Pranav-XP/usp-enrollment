@@ -135,12 +135,11 @@ class StudentController extends Controller
                     // Decode prerequisite groups
                     $prerequisiteGroups = $course->prerequisites->pluck('prerequisite_groups')->flatten()->toArray();
 
-                    // Check if both regular and year prerequisites are satisfied
-                    $meetsPrerequisites = $this->prerequisiteService->checkPrerequisites($prerequisiteGroups, $completedCourses);
-                    $meetsYearRequirement = $this->prerequisiteService->checkYearPrerequisite($student, $course);
+                    // Check if prerequisites are met
+                    $prerequisitesMet = $this->prerequisiteService->checkCoursePrerequisites($course, $student);
 
                     // Mark course as eligible if both are satisfied
-                    $course->eligible =  $meetsPrerequisites && $meetsYearRequirement;
+                    $course->eligible =  $prerequisitesMet;
                 }
 
                 return $course;
