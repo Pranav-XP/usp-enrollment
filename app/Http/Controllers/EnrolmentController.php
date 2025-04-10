@@ -201,9 +201,9 @@ $availableCourses = Course::whereNotIn('id', $excludedCourseIds)
 {
     $result = $this->canEnrollInCourse(1,11);
     if ($result) {
-        return 'Student can enroll in the course.'; // Return a string if true
+        return 'Hello Shiva'; // Return a string if true
     } else {
-        return 'Student cannot enroll in the course.'; // Return a string if false
+        return 'Hello shiva'; // Return a string if false
     }
 }
 }
