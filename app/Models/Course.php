@@ -7,22 +7,28 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Course extends Model
 {
-     // Fillable properties for mass assignment
-     protected $fillable = [
-        'course_code', 'course_title', 'description', 'cost', 'semester_1', 'semester_2','year'
+    // Fillable properties for mass assignment
+    protected $fillable = [
+        'course_code',
+        'course_title',
+        'description',
+        'cost',
+        'semester_1',
+        'semester_2',
+        'year'
     ];
 
-    public function programs():BelongsToMany
+    public function programs(): BelongsToMany
     {
         return $this->belongsToMany(Program::class, 'course_program')->withTimestamps();
     }
 
     //Many to Many students
-    public function students():BelongsToMany
+    public function students(): BelongsToMany
     {
         return $this->belongsToMany(Student::class, 'course_student', 'course_id', 'student_id')
-                    ->withPivot('grade', 'enrollment_status')
-                    ->withTimestamps();
+            ->withPivot('grade', 'enrollment_status')
+            ->withTimestamps();
     }
 
     // Define the relationship between Course and Prerequisite
@@ -32,8 +38,7 @@ class Course extends Model
     }
 
     public function transactions()
-        {
-            return $this->hasMany(Transaction::class);
-        }
-
+    {
+        return $this->belongsToMany(Transaction::class, 'course_transaction');
+    }
 }

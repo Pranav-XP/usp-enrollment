@@ -57,13 +57,14 @@ class StudentSeeder extends Seeder
             ]);
         }
 
-        // Attach second course with enrolled status (no grade)
-        $courses = Course::skip(1)->take(1)->get();  // Skip the first course and take the next one
-        foreach ($courses as $course) {
-            $student->courses()->attach($course->id, [
-                'status' => EnrolmentStatus::ENROLLED->value,  // Example status - enrolled
-            ]);
-        }
+        // // Attach second course with enrolled status (no grade)
+        // $courses = Course::skip(1)->take(1)->get();  // Skip the first course and take the next one
+        // foreach ($courses as $course) {
+        //     $student->courses()->attach($course->id, [
+        //         'grade' => 3.5,  // Example grade for completed course
+        //         'status' => EnrolmentStatus::COMPLETED->value,  // Example status - completed
+        //     ]);
+        // }
 
         $studentData2 = [
             'user_id' => null,  // Will be set later to the created User ID
