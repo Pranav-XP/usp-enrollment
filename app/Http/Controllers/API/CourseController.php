@@ -11,9 +11,31 @@ class CourseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        try {
+            // Optionally, we can paginate the results or retrieve all records.
+            $courses = Course::with(['prerequisites'])
+                ->when($request->has('status'), function ($query) use ($request) {
+                    // Filter by status if a 'status' parameter is provided
+                    return $query->where('status', $request->status);
+                })
+                ->when($request->has('year'), function ($query) use ($request) {
+                    // Filter by year if a 'year' parameter is provided
+                    return $query->where('year', $request->year);
+                })
+                ->paginate(10); // You can change the number for pagination
+
+            // Return the paginated list of courses
+            return response()->json([
+                'courses' => $courses,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while fetching the courses',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -53,6 +75,8 @@ class CourseController extends Controller
             ], 500);
         }
     }
+
+
 
 
     /**

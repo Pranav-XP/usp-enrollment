@@ -49,11 +49,19 @@ class StudentSeeder extends Seeder
 
 
         $courses = Course::take(1)->get();
-        // Attach courses with pivot data (grade and enrollment status)
+        // Attach first course with completed status and GPA (grade)
         foreach ($courses as $course) {
             $student->courses()->attach($course->id, [
-                'grade' => 3.5,  // Example grade
-                'status' => EnrolmentStatus::COMPLETED->value,  // Example status
+                'grade' => 3.5,  // Example grade for completed course
+                'status' => EnrolmentStatus::COMPLETED->value,  // Example status - completed
+            ]);
+        }
+
+        // Attach second course with enrolled status (no grade)
+        $courses = Course::skip(1)->take(1)->get();  // Skip the first course and take the next one
+        foreach ($courses as $course) {
+            $student->courses()->attach($course->id, [
+                'status' => EnrolmentStatus::ENROLLED->value,  // Example status - enrolled
             ]);
         }
 
@@ -94,6 +102,8 @@ class StudentSeeder extends Seeder
                 'status' => EnrolmentStatus::COMPLETED->value,  // Example status
             ]);
         }
+
+
 
 
         /*       //To test CS324
