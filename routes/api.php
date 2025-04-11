@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\API\CourseController;
 use App\Http\Controllers\API\EnrolmentController;
+use App\Http\Controllers\API\GradesController;
 use App\Http\Controllers\API\StudentController;
 
 Route::post('/auth/login', [AuthController::class, 'loginUser']);
@@ -18,6 +19,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/courses', [CourseController::class, 'index']);
     Route::post('/enrol', [EnrolmentController::class, 'enrol']);
     Route::post('/check', [EnrolmentController::class, 'check']);
+
+    Route::get('/grades', [GradesController::class, 'index']);
 });
 
 
