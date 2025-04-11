@@ -74,7 +74,7 @@ class StudentSeeder extends Seeder
             'dob' => '2003-04-08',  // Date of Birth
             'email' => 's11210082@student.usp.ac.fj',
             'phone' => '7777777',
-            'program_id' => 2,  // Optional: assign to an existing program
+            'program_id' => 1,  // Optional: assign to an existing program
             'enrollment_year' => Carbon::now()->year,  // Current year
         ];
 
@@ -105,6 +105,48 @@ class StudentSeeder extends Seeder
         }
 
 
+
+
+
+        //USER 3 BELOW
+
+
+        $studentData3 = [
+            'user_id' => null,  // Will be set later to the created User ID
+            'student_id' => 'S11171153', // Unique student ID
+            'first_name' => 'Pranav',
+            'last_name' => 'Chand',
+            'dob' => '2000-08-04',  // Date of Birth
+            'email' => 's11171153@student.usp.ac.fj',
+            'phone' => '9034927',
+            'program_id' => 1,  // Optional: assign to an existing program
+            'enrollment_year' => Carbon::now()->year,  // Current year
+        ];
+
+        // Create the user for this student
+        $user3 = User::create([
+            'name' => $studentData3['first_name'] . ' ' . $studentData2['last_name'],
+            'email' => $studentData3['email'],
+            'password' => Hash::make('S11171153'),  // Default password
+        ]);
+
+
+        $user3->assignRole('student');
+
+        // Set the user_id for the student data
+        $studentData3['user_id'] = $user3->id;
+
+        // Create the student record
+        $student3 = Student::create($studentData3);
+
+        $courses = Course::take(1)->get();
+        // Attach courses with pivot data (grade and enrollment status)
+        foreach ($courses as $course) {
+            $student3->courses()->attach($course->id, [
+                'grade' => 3.5,  // Example grade
+                'status' => EnrolmentStatus::COMPLETED->value,  // Example status
+            ]);
+        }
 
 
         /*       //To test CS324

@@ -331,7 +331,7 @@ class StudentController extends Controller
             DB::commit();
 
             // Return a success message
-            return response()->json(['message' => 'All courses marked as completed with GPA 3.5'], 200);
+            return response()->json(['message' => 'All courses graded'], 200);
         } catch (\Exception $e) {
             // Rollback the transaction in case of error
             DB::rollBack();
