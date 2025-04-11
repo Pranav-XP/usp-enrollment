@@ -134,7 +134,7 @@ class EnrolmentController extends Controller
         $alreadyCompleted = in_array($course->course_code, $completedCourses);
 
         // Check if prerequisites are met
-        $prerequisitesMet = $this->checkCoursePrerequisites($course, $student);
+        $prerequisitesMet = $this->prerequisiteService->checkCoursePrerequisites($course, $student);
 
         $eligible = !$alreadyCompleted && $prerequisitesMet;
 

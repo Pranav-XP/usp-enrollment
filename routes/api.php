@@ -11,8 +11,9 @@ Route::post('/auth/login', [AuthController::class, 'loginUser']);
 
 // Protected Routes
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/student', [StudentController::class, 'index']);
     Route::get('/student/program', [StudentController::class, 'getProgram']);
-    Route::post('/student/mark-all', [StudentController::class, 'markAllCourses']);
+    Route::post('/grade-all', [StudentController::class, 'markAllCourses']);
     Route::get('/student/completed-courses', [StudentController::class, 'completedCourses']);
 
     Route::get('/courses/{id}', [CourseController::class, 'show']);

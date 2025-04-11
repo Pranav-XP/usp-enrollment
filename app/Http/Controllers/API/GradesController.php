@@ -32,7 +32,10 @@ class GradesController extends Controller
                 ], 404);
             }
 
-            $courses = $student->courses()->withPivot('grade', 'status')->get();
+            $courses = $student->courses()
+                ->withPivot('grade', 'status')
+                ->wherePivot('status', 'completed')
+                ->get();
 
             $grades = $courses->map(function ($course) {
                 return [
@@ -41,20 +44,30 @@ class GradesController extends Controller
                     'course_name'  => $course->course_title,
                     'gpa'          => $course->pivot->grade,
                     'status'       => $course->pivot->status,
-                    'year' => $course->year,
-                    'semester_1' => $course->semester_1,
-                    'semester_2' => $course->semester_2,
+                    'year'         => $course->year,
+                    'semester_1'   => $course->semester_1,
+                    'semester_2'   => $course->semester_2,
                 ];
             });
 
+            // Calculate total GPA
+            $validGrades = $courses->filter(function ($course) {
+                return $course->pivot->grade !== null;
+            });
+
+            $totalGpa = $validGrades->count() > 0
+                ? round($validGrades->sum(fn($c) => $c->pivot->grade) / $validGrades->count(), 2)
+                : null;
+
             return response()->json([
-                'grades' => $grades,
+                'grades'    => $grades,
+                'total_gpa' => $totalGpa,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'An error occurred while fetching grade data.',
-                'error' => $e->getMessage(),
+                'error'   => $e->getMessage(),
             ], 500);
         }
     }

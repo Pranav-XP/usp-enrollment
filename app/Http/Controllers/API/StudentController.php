@@ -28,6 +28,43 @@ class StudentController extends Controller
     {
         $this->prerequisiteService = $prerequisiteService;
     }
+
+    public function index()
+    {
+        try {
+            $user = Auth::user();
+
+            if (!$user) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Unauthenticated.'
+                ], 401); // Unauthorized
+            }
+
+            // Load the student along with the related program
+            $user->load([
+                'student.program' // nested eager loading
+            ]);
+
+            if (!$user->student) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Student record not found for the authenticated user.'
+                ], 404); // Not Found
+            }
+
+            return response()->json([
+                'student' => $user->student
+            ], 200); // OK
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'An unexpected error occurred.',
+                'error' => $e->getMessage()
+            ], 500); // Internal Server Error
+        }
+    }
     /**
      * @OA\Get(
      *     path="/api/student/program",
@@ -279,7 +316,8 @@ class StudentController extends Controller
                     // Assuming `student_course` is the pivot table
                     // Set status and GPA on the pivot table
                     $studentCourse->pivot->status = 'completed'; // Or whatever status represents completion
-                    $studentCourse->pivot->grade = 3.5; // Set GPA to 3.5
+                    $possibleGpas = [4.5, 4.0, 3.5, 3.0];
+                    $studentCourse->pivot->grade = $possibleGpas[array_rand($possibleGpas)];
 
                     // Save the updated pivot record
                     $studentCourse->pivot->save();

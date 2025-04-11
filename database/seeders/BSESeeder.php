@@ -13,11 +13,11 @@ class BSESeeder extends Seeder
      */
     public function run(): void
     {
-          // List of courses with required details
+        // List of courses with required details
         $courses = [
             ['code' => 'CS111', 'title' => 'Introduction to Computing Science', 'year' => 1, 'cost' => 500, 'semester_1' => true, 'semester_2' => false, 'description' => 'An introduction to computer programming and basic computer organization, covering I/O, storage, and the CPU. Students will learn problem-solving and algorithms using a modern high-level programming language. No prior computing experience is required, as foundational knowledge of PCs, Windows, and the programming environment will be taught early in the course.'],
-            ['code' => 'CS112', 'title' => 'Data Structures & Algorithms', 'year' => 1, 'cost' => 500, 'semester_1' => false, 'semester_2' => true , 'description' => 'This course teaches software development using C++, with concepts applicable across programming languages. Students will learn syntax, logic, and key data structures like arrays, stacks, queues, and trees, along with algorithms such as searching, sorting, and recursion. Emphasis is placed on writing efficient, object-oriented code using suitable data structures and algorithms.'],
-            ['code' => 'CS140', 'title' => 'Introduction to Software Engineering', 'year' => 1, 'cost' => 450, 'semester_1' => false, 'semester_2' => true , 'description' => 'This course introduces the fundamentals of Software Engineering, covering the software development life cycle, development models, requirements elicitation, design, and testing techniques. Students will gain a basic understanding of each phase in the software development process.'],
+            ['code' => 'CS112', 'title' => 'Data Structures & Algorithms', 'year' => 1, 'cost' => 500, 'semester_1' => false, 'semester_2' => true, 'description' => 'This course teaches software development using C++, with concepts applicable across programming languages. Students will learn syntax, logic, and key data structures like arrays, stacks, queues, and trees, along with algorithms such as searching, sorting, and recursion. Emphasis is placed on writing efficient, object-oriented code using suitable data structures and algorithms.'],
+            ['code' => 'CS140', 'title' => 'Introduction to Software Engineering', 'year' => 1, 'cost' => 450, 'semester_1' => false, 'semester_2' => true, 'description' => 'This course introduces the fundamentals of Software Engineering, covering the software development life cycle, development models, requirements elicitation, design, and testing techniques. Students will gain a basic understanding of each phase in the software development process.'],
             ['code' => 'MA111', 'title' => 'Calculus 1 & Linear Algebra 1', 'year' => 1, 'cost' => 400, 'semester_1' => true, 'semester_2' => true, 'description' => 'This course covers Calculus (limits, derivatives, exponential/logarithmic functions, integration) and Linear Algebra (systems of equations, Gaussian elimination, matrices, determinants). Note: Students without recent math experience must complete MAF12 before enrolling.'],
             ['code' => 'MA161', 'title' => 'Discrete Mathematics 1', 'year' => 1, 'cost' => 400, 'semester_1' => false, 'semester_2' => true, 'description' => 'Discrete Mathematics explores structures that are not continuous, covering topics like logic, proofs, functions, set theory, Boolean algebra, algorithms, number theory, induction, recursion, counting, probability, and generating functions. MA161 is compulsory for Computer Science majors and recommended for students in Mathematics, Information Systems, Engineering, or Physics.'],
             ['code' => 'MG101', 'title' => 'Introduction to Management', 'year' => 1, 'cost' => 300, 'semester_1' => true, 'semester_2' => true, 'description' => 'This course covers descriptive statistics, probability, hypothesis testing, and correlation/regression, including binomial/normal distributions and significance tests. Cannot be credited with ST130.'],
@@ -44,7 +44,7 @@ class BSESeeder extends Seeder
             ['code' => 'IS314', 'title' => 'Computing Project', 'year' => 3, 'cost' => 600, 'semester_1' => false, 'semester_2' => true, 'description' => 'This project-based course applies software engineering techniques to develop a real-world ICT project. Small teams create a software system and provide complete documentation and the system itself as deliverables.'],
             ['code' => 'IS328', 'title' => 'Data Mining', 'year' => 3, 'cost' => 600, 'semester_1' => false, 'semester_2' => true, 'description' => 'This course introduces data mining concepts, methods, and algorithms, with a focus on practical applications. Students gain hands-on experience using data mining software.'],
             ['code' => 'IS333', 'title' => 'Project Management', 'year' => 3, 'cost' => 600, 'semester_1' => true, 'semester_2' => false, 'description' => 'This course covers foundational project management knowledge based on the PMBOK, focusing on managing projects to create unique products, services, or results. It includes real-world case studies and covers key principles, tools, and processes for effective project planning and documentation in business and government sectors.'],
-            
+
             ['code' => 'CS415', 'title' => 'Artificial Intelligence', 'year' => 4, 'cost' => 700, 'semester_1' => true, 'semester_2' => false, 'description' => 'This course introduces advanced concepts in software design, management, measurement, metrics, and testing, focusing on quality assessment and process improvement. It emphasizes using software metrics to understand and enhance software and development processes.'],
             ['code' => 'CS403', 'title' => 'Cyber Defence: Governance & Risk Management', 'year' => 4, 'cost' => 700, 'semester_1' => false, 'semester_2' => true, 'description' => 'This course focuses on cybercrime operations and the implementation of governance policies for information systems. It covers system selection, security assurance, and management strategies. Key topics include risk management, cyberattack mitigation, and the application of these policies in e-commerce and e-health sectors.'],
             ['code' => 'CS412', 'title' => 'Artificial Intelligence', 'year' => 4, 'cost' => 750, 'semester_1' => true, 'semester_2' => false, 'description' => 'This course covers AI topics like data science, machine learning, robotics, and pattern recognition, with a focus on algorithms and key research. It also includes evolutionary computation, neural networks, and fuzzy logic.'],
@@ -52,14 +52,14 @@ class BSESeeder extends Seeder
             ['code' => 'CS400', 'title' => 'Industry Experience Project', 'year' => 4, 'cost' => 1000, 'semester_1' => false, 'semester_2' => true, 'description' => 'This capstone course for BNS and BSE final-year students offers a practical environment to develop both professional and generic skills aligned with the SFIA framework. Students will work on real-life ICT projects provided by clients in the Pacific region, including SMEs, community groups, and NGOs.'],
         ];
 
-        
+
         // Insert courses and attach to program
         foreach ($courses as $course) {
             $courseId = DB::table('courses')->insertGetId([
                 'course_code' => $course['code'],
                 'course_title' => $course['title'],
                 'year' => $course['year'],
-                'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.',
+                'description' => $course['description'],
                 'cost' => $course['cost'],
                 'semester_1' => $course['semester_1'],
                 'semester_2' => $course['semester_2'],
@@ -75,6 +75,5 @@ class BSESeeder extends Seeder
                 'updated_at' => now(),
             ]);
         }
-
     }
 }
