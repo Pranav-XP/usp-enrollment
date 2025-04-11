@@ -17,18 +17,18 @@ class BNSSeeder extends Seeder
             //YEAR 1
             //1['code' => 'CS111', 'title' => 'Introduction to Computing Science', 'year' => 1, 'cost' => 500, 'semester_1' => true, 'semester_2' => false],
             //2['code' => 'CS112', 'title' => 'Programming Fundamentals', 'year' => 1, 'cost' => 500, 'semester_1' => true, 'semester_2' => false],
-            ['code' => 'CS150', 'title' => 'Introduction to Computer Networks & Security', 'year' => 1, 'cost' => 500, 'semester_1' => false, 'semester_2' => true],
+            ['code' => 'CS150', 'title' => 'Introduction to Computer Networks & Security', 'year' => 1, 'cost' => 500, 'semester_1' => false, 'semester_2' => true, 'description' => 'This course teaches computer networks, security basics, system organization, and network topologies. It focuses on securing systems from common threats.'],
             //4['code' => 'MA111', 'title' => 'Mathematics for Computing', 'year' => 1, 'cost' => 500, 'semester_1' => true, 'semester_2' => false],
             //5['code' => 'MA161', 'title' => 'Discrete Mathematics', 'year' => 1, 'cost' => 500, 'semester_1' => false, 'semester_2' => true],
             //6['code' => 'MG101', 'title' => 'Introduction to Management', 'year' => 1, 'cost' => 500, 'semester_1' => true, 'semester_2' => false],
             //7['code' => 'ST131', 'title' => 'Introduction to Statistics', 'year' => 1, 'cost' => 500, 'semester_1' => false, 'semester_2' => true],
-            //8['code' => 'UU100A', 'title' => 'Communication and Information Literacy', 'year' => 1, 'cost' => 500, 'semester_1' => true, 'semester_2' => false],
+            //8['code' => 'UU100A', 'title' => 'Communication and Information Literacy', 'year' => 1, 'cost' => 500, 'semester_1' => true, 'semester_2' => false],, 'description' => ''
             //9['code' => 'UU114', 'title' => 'English for Academic Purposes', 'year' => 1, 'cost' => 500, 'semester_1' => false, 'semester_2' => true],
             
             //YEAR 2
             //10['code' => 'CS211', 'title' => 'Data Structures and Algorithms', 'year' => 2, 'cost' => 600, 'semester_1' => true, 'semester_2' => false],
             //11['code' => 'CS214', 'title' => 'Algorithm Analysis', 'year' => 2, 'cost' => 600, 'semester_1' => false, 'semester_2' => true],
-            ['code' => 'CS215', 'title' => 'Computer Communications & Management', 'year' => 2, 'cost' => 600, 'semester_1' => true, 'semester_2' => false],
+            ['code' => 'CS215', 'title' => 'Computer Communications & Management', 'year' => 2, 'cost' => 600, 'semester_1' => true, 'semester_2' => false, 'description' => 'This course covers the fundamentals of computer communication and networking, focusing on the network interface and Internet layers of the TCP/IP stack. It also includes access control, wireless network components, routing protocols, subnetting, network security, and management.'],
             //12['code' => 'CS218', 'title' => 'Database Management Systems', 'year' => 2, 'cost' => 600, 'semester_1' => false, 'semester_2' => true],
             //13['code' => 'CS219', 'title' => 'Operating Systems', 'year' => 2, 'cost' => 600, 'semester_1' => true, 'semester_2' => false],
             //16['code' => 'IS221', 'title' => 'Information Systems Analysis', 'year' => 2, 'cost' => 600, 'semester_1' => false, 'semester_2' => true],
@@ -38,10 +38,10 @@ class BNSSeeder extends Seeder
             //YEAR 3
             //19['code' => 'CS310', 'title' => 'Advanced Software Engineering', 'year' => 3, 'cost' => 700, 'semester_1' => false, 'semester_2' => true],
             //20['code' => 'CS311', 'title' => 'Artificial Intelligence', 'year' => 3, 'cost' => 700, 'semester_1' => true, 'semester_2' => false],
-            ['code' => 'CS317', 'title' => 'Computer & Network Security', 'year' => 3, 'cost' => 700, 'semester_1' => false, 'semester_2' => true],
+            ['code' => 'CS317', 'title' => 'Computer & Network Security', 'year' => 3, 'cost' => 700, 'semester_1' => false, 'semester_2' => true, 'description' => 'his course provides an introduction to computer security, focusing on cryptography, cryptanalysis, and systems security. It covers network security, security protocol design and analysis, network attacks and mitigation strategies, privacy, and other emerging security topics.'],
             //21['code' => 'CS324', 'title' => 'Machine Learning', 'year' => 3, 'cost' => 700, 'semester_1' => true, 'semester_2' => false],
-            ['code' => 'CS350', 'title' => 'Wireless Networks', 'year' => 3, 'cost' => 700, 'semester_1' => false, 'semester_2' => true],
-            ['code' => 'CS351', 'title' => 'Network Design & Administration', 'year' => 3, 'cost' => 700, 'semester_1' => true, 'semester_2' => false],
+            ['code' => 'CS350', 'title' => 'Wireless Networks', 'year' => 3, 'cost' => 700, 'semester_1' => false, 'semester_2' => true, 'description' => 'This course covers wireless communication fundamentals, including protocols, transmission methods, and current networking standards, while also exploring emerging technologies.'],
+            ['code' => 'CS351', 'title' => 'Network Design & Administration', 'year' => 3, 'cost' => 700, 'semester_1' => true, 'semester_2' => false, 'description' => 'This advanced networking course prepares students to tackle real-world networking challenges, focusing on system administration, maintenance, and ensuring network resilience in an operational environment.'],
             //23['code' => 'CS352', 'title' => 'Software Testing', 'year' => 3, 'cost' => 700, 'semester_1' => false, 'semester_2' => true],
             //26['code' => 'IS333', 'title' => 'IT Project Management', 'year' => 3, 'cost' => 700, 'semester_1' => true, 'semester_2' => false],
             
