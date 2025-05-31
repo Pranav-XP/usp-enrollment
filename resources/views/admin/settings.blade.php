@@ -1,7 +1,7 @@
 <x-layouts.app :title="__('Enrolment Settings')">
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
-        <flux:heading>Enrolment Settings</flux:heading>
-        <flux:subheading>Toggle enrolments on & off</flux:subheading>
+        <flux:heading size='xl'>Enrolment Settings</flux:heading>
+        <flux:subheading>Check the box to allow enrolments</flux:subheading>
 
         <form method="post" action="{{ route('settings.update') }}">
             @csrf

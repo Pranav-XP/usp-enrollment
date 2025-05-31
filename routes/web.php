@@ -23,22 +23,22 @@ Route::get('/dashboard', [EnrolmentController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-    // Route for enrolling in a course
-    Route::post('/enrol/{courseId}', [EnrolmentController::class, 'enrolStudent'])
+// Route for enrolling in a course
+Route::post('/enrol/{courseId}', [EnrolmentController::class, 'enrolStudent'])
     ->middleware(['auth', 'verified'])
     ->name('enrol.course');
 
-    Route::get('courses', [CourseController::class, 'index'])
+Route::get('courses', [CourseController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('courses');
 
-    Route::get('grades', [CourseController::class, 'showGrades'])
+Route::get('grades', [CourseController::class, 'showGrades'])
     ->middleware(['auth', 'verified'])
     ->name('grades');
 
-    Route::middleware(['auth'])->group(function () {
-        Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions');
-    });
+Route::middleware(['auth'])->group(function () {
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions');
+});
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
@@ -50,13 +50,11 @@ Route::middleware(['auth'])->group(function () {
 
 Route::group(['middleware' => ['can:manage app']], function () {
     Route::get('admin/register-student', Register::class)->name('admin.register-student');
-    Route::get('admin/program', CreateProgram::class)->name('admin.programmes');
-    Route::get('admin/course', Courses::class)->name('admin.course');
     Route::get('/settings', [SettingController::class, 'edit'])->name('settings.edit');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
-    Route::get('/admin/students', [AdminController::class, 'showStudentsList'])->name('admin.students');
+    Route::get('/admin/grades', [AdminController::class, 'showStudentsList'])->name('admin.grades');
     Route::get('/admin/students/{studentId}', [AdminController::class, 'showGradeForm'])->name('admin.students.gradeForm');
     Route::put('/admin/students/{studentId}/grade', [AdminController::class, 'updateGrades'])->name('admin.students.updateGrade');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
