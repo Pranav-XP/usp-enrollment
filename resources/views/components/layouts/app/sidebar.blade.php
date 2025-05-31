@@ -25,15 +25,6 @@
                     @hasrole('admin')
                     <flux:navlist.item icon="user-plus" :href="route('admin.register-student')" :current="request()->routeIs('admin.register-student')" wire:navigate>{{ __('Register Student') }}</flux:navlist.item>
                     
-                    <flux:navlist.item icon="list-bullet" 
-                    :href="route('admin.programmes')" 
-                    :current="request()->routeIs('admin.programmes')" 
-                    wire:navigate>{{ __('Manage programmes') }}</flux:navlist.item>
-                    
-                    <flux:navlist.item icon="clipboard-document-list" 
-                    :href="route('admin.course')" 
-                    :current="request()->routeIs('admin.course')" 
-                    wire:navigate>{{ __('Create course') }}</flux:navlist.item>
 
                     <flux:navlist.item icon="adjustments-horizontal" 
                     :href="route('settings.edit')" 
@@ -42,8 +33,8 @@
 
                     
                     <flux:navlist.item icon="pencil" 
-                    :href="route('admin.students')" 
-                    :current="request()->routeIs('admin.students')" 
+                    :href="route('admin.grades')" 
+                    :current="request()->routeIs('admin.grades')" 
                     wire:navigate>{{ __('Manage Grades') }}</flux:navlist.item>
                     {{-- <flux:navlist.item icon="list-bullet" :href="route('course.create')" :current="request()->routeIs('course.create')" wire:navigate>{{ __('Manage courses') }}</flux:navlist.item> --}}
                     @endhasrole
