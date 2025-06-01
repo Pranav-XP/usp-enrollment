@@ -14,7 +14,7 @@ class AdminController extends Controller
     public function showStudentsList()
     {
         $students = Student::all();
-        return view('admin.grades', compact('students'));
+        return view('admin.students', compact('students'));
     }
 
     // Show grade form for a student and a course
@@ -77,10 +77,10 @@ class AdminController extends Controller
             $message = "Successfully updated grades for {$student->first_name} {$student->last_name}";
             if (!empty($errors)) {
                 $message .= " Some updates were skipped: " . implode(", ", $errors);
-                return redirect()->route('admin.grades')->with('error', $message);
+                return redirect()->route('admin.students')->with('error', $message);
             }
 
-            return redirect()->route('admin.grades')->with('success', $message);
+            return redirect()->route('admin.students')->with('success', $message);
         } catch (\Exception $e) {
             DB::rollBack(); // Rollback on error
             return redirect()->back()->with('error', 'Failed to update grades: ' . $e->getMessage());
