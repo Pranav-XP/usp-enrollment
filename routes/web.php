@@ -20,9 +20,6 @@ use Illuminate\Support\Facades\Mail;
     return view('welcome');
 })->name('home'); */
 
-Route::get('/email', function () {
-    Mail::to('pranavchand777@gmail.com')->send(new MyTestEmail);
-});
 
 Route::get('/check-enrollment', [EnrolmentController::class, 'testEnrollment']);
 
