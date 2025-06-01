@@ -20,6 +20,7 @@
                         <flux:navlist.item icon="list-bullet" :href="route('courses')" :current="request()->routeIs('courses')" wire:navigate>{{ __('Courses') }}</flux:navlist.item>
                         <flux:navlist.item icon="clipboard-document-check" :href="route('grades')" :current="request()->routeIs('grades')" wire:navigate>{{ __('My Grades') }}</flux:navlist.item>
                         <flux:navlist.item icon="currency-dollar" :href="route('transactions')" :current="request()->routeIs('transactions')" wire:navigate>{{ __('My Fees') }}</flux:navlist.item>
+                        <flux:navlist.item icon="lock-closed" :href="route('student.holds')" :current="request()->routeIs('student.holds`')" wire:navigate>{{ __('My Holds') }}</flux:navlist.item>
                         @endhasrole
                         
                         {{-- Admin Navigation Links --}}
@@ -34,9 +35,9 @@
                         
                         
                         <flux:navlist.item icon="pencil" 
-                        :href="route('admin.grades')" 
-                        :current="request()->routeIs('admin.grades')" 
-                        wire:navigate>{{ __('Manage Grades') }}</flux:navlist.item>
+                        :href="route('admin.students')" 
+                        :current="request()->routeIs('admin.students')" 
+                        wire:navigate>{{ __('Manage Students') }}</flux:navlist.item>
                         {{-- <flux:navlist.item icon="list-bullet" :href="route('course.create')" :current="request()->routeIs('course.create')" wire:navigate>{{ __('Manage courses') }}</flux:navlist.item> --}}
                         @endhasrole
                     </flux:navlist.group>

@@ -1,7 +1,8 @@
-<x-layouts.app :title="__('Manage Student Grades')"> {{-- Updated title for clarity --}}
+{{-- resources/views/admin/grades.blade.php (or admin/students/index.blade.php) --}}
+<x-layouts.app :title="__('Manage Student Grades & Holds')">
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
-        <flux:heading size="xl">Manage Student Grades</flux:heading> {{-- Consistent heading --}}
-        <flux:subheading>Select a student to view or update their course grades.</flux:subheading> {{-- Consistent subheading --}}
+        <flux:heading size="xl">Manage Students</flux:heading>
+        <flux:subheading>Select a student to view or update their course grades or manage holds.</flux:subheading>
 
         {{-- Success/Error Messages --}}
         @if (session('success'))
@@ -16,7 +17,6 @@
             </div>
         @endif
 
-        {{-- Display the list of students in a consistent table style --}}
         @if ($students->isEmpty())
             <p class="text-gray-600 dark:text-gray-400 p-4 bg-white dark:bg-zinc-800 rounded-lg shadow-md">No students found.</p>
         @else
@@ -28,6 +28,7 @@
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Student Name</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Email</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Program</th>
+                                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Hold Status</th>
                                 <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
@@ -36,11 +37,21 @@
                                 <tr class="hover:bg-gray-50 dark:hover:bg-zinc-700 transition duration-150 ease-in-out">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{{ $student->first_name }} {{ $student->last_name }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{{ $student->email }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{{ $student->program->name }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{{ $student->program->name ?? 'N/A' }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
+                                        @if ($student->is_on_hold)
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800 dark:bg-red-700 dark:text-red-100">ON HOLD</span>
+                                        @else
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-700 dark:text-green-100">CLEAR</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm flex gap-2 justify-center">
                                         <flux:button variant="primary" href="{{ route('admin.students.gradeForm', $student->id) }}">
                                            Update Grades
                                         </flux:button>
+                                            <flux:button variant="outline" href="{{ route('admin.holds.index', $student->id) }}">
+                                                View Holds
+                                            </flux:button>
                                     </td>
                                 </tr>
                             @endforeach
