@@ -22,12 +22,12 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('admin'),
             'remember_token' => Str::random(10),
-            'created_at'=>now(),
-            'updated_at'=>now()
+            'created_at' => now(),
+            'updated_at' => now()
         ]);
 
-         // Inserting a Bachelors of Software Engineering (BSE) program record
-         DB::table('programs')->insert([
+        // Inserting a Bachelors of Software Engineering (BSE) program record
+        DB::table('programs')->insert([
             'program_code' => 'BSE',
             'name' => 'Bachelors of Software Engineering',
             'description' => 'A program focused on developing software engineering skills.',
@@ -50,8 +50,8 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->call(BSESeeder::class);
         $this->call(BNSSeeder::class);
-        $this->call(StudentSeeder::class);
         $this->call(PrerequisiteSeeder::class);
-
+        $this->call(SemesterSeeder::class);
+        $this->call(StudentSeeder::class);
     }
 }

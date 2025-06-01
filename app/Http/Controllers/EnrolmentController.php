@@ -6,144 +6,182 @@ use App\EnrolmentStatus;
 use App\Models\Course;
 use App\Models\Prerequisite;
 use App\Models\Student;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
+use App\Models\Semester;
 use App\Models\Setting;
-use App\Models\Transaction;
-use Illuminate\Support\Str;
+// use App\Models\Transaction; // No longer directly used for creation here
+use App\Services\TransactionService; // Import the TransactionService
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
+// use Illuminate\Support\Str; // No longer directly used for UUID generation here
 
 class EnrolmentController extends Controller
 {
+    protected $transactionService;
 
-    public function dashboard()
+    // Constructor to inject the service
+    public function __construct(TransactionService $transactionService)
     {
-        // Get the authenticated user
-        $id = Auth::id();
+        $this->transactionService = $transactionService;
+    }
 
-        // Retrieve the student based on the authenticated user's ID
+    public function dashboard(Request $request)
+    {
+        $id = Auth::id();
         $student = Student::where('user_id', $id)->first();
         $programId = $student ? $student->program_id : null;
 
         if (!$student) {
-            return view('dashboard');
+            return view('dashboard')->with('error', 'Your student profile could not be found.');
         }
 
+        $activeSemester = Semester::getActiveSemester();
+
+        if (!$activeSemester) {
+            return redirect()->back()->with('error', 'Enrollment is currently closed or no active semester is defined by the administration.');
+        }
 
         $enrollmentSetting = Setting::where('key', 'users_can_enrol')->value('value');
 
-        // Fetch the enrolled courses
-        $enrolledCourses = $student->courses()->wherePivot('status', EnrolmentStatus::ENROLLED->value)->get();
+        $enrolledCourses = $student->courses()
+            ->wherePivot('status', EnrolmentStatus::ENROLLED->value)
+            ->wherePivot('semester_id', $activeSemester->id)
+            ->get();
 
-        // Fetch the completed courses
-        $completedCourses = $student->courses()->wherePivot('status', EnrolmentStatus::COMPLETED->value)->get();
+        $completedCourses = $student->courses()
+            ->wherePivot('status', EnrolmentStatus::COMPLETED->value)
+            ->get();
 
-        // Combine both enrolled and completed courses' IDs
         $excludedCourseIds = $enrolledCourses->pluck('id')->merge($completedCourses->pluck('id'))->toArray();
+
+        $semesterColumn = 'semester_' . $activeSemester->term;
 
         $availableCourses = Course::whereNotIn('id', $excludedCourseIds)
             ->whereHas('programs', function ($query) use ($programId) {
                 $query->where('program_id', $programId);
             })
+            ->where($semesterColumn, true)
             ->get();
 
-        // Check prerequisites for each course and store the result
         $checkedCourses = $availableCourses->map(function ($course) use ($student) {
             $prerequisitesMet = $this->canEnrollInCourse($student->id, $course->id);
-            $course->prerequisites_met = $prerequisitesMet; // Attach the status to the course
+            $course->prerequisites_met = $prerequisitesMet;
             return $course;
         });
 
-        return view('dashboard', compact('enrolledCourses', 'checkedCourses', 'enrollmentSetting'));
+        return view('dashboard', compact('enrolledCourses', 'checkedCourses', 'enrollmentSetting', 'activeSemester'));
     }
 
     public function enrolStudent(Request $request, $courseId)
     {
-        // Get the authenticated user
         $id = Auth::id();
-
-        // Retrieve the student based on the authenticated user's ID
         $student = Student::where('user_id', $id)->first();
 
-        // Find the course by ID
-        $course = Course::findOrFail($courseId);
-
-        // Check if prerequisites are met
-        if (!$this->canEnrollInCourse($student->id, $course->id)) {
-            return redirect()->route('dashboard')->with('error', 'You do not meet the prerequisites for this course.');
+        if (!$student) {
+            return redirect()->route('dashboard')->with('error', 'Student record not found.');
         }
 
-        // Enrol the student in the course
-        $student->courses()->attach($course->id, ['status' => EnrolmentStatus::ENROLLED->value]);  // Adjust if necessary based on your pivot table
+        $activeSemester = Semester::getActiveSemester();
+        $activeSemesterId = $activeSemester->id;
 
-        Transaction::create([
-            'student_id'       => $student->id,
-            'course_id'        => $course->id,
-            'reference_number' => Str::uuid(), // Generate a unique reference
-            'amount'           => $course->cost, // Fetch course cost
-            'status'           => 'completed', // Default status
+        if (!$activeSemester) {
+            return redirect()->route('dashboard')->with('error', 'Enrollment is currently closed or no active semester is defined.');
+        }
+
+        $course = Course::findOrFail($courseId);
+
+        $semesterColumn = 'semester_' . $activeSemester->term;
+
+        if (!($course->{$semesterColumn})) {
+            return redirect()->route('dashboard')->with('error', 'This course is not offered in the ' . $activeSemester->name . '.');
+        }
+
+        $alreadyEnrolled = $student->courses()
+            ->where('course_id', $courseId)
+            ->wherePivot('semester_id', $activeSemesterId)
+            ->exists();
+        if ($alreadyEnrolled) {
+            return redirect()->route('dashboard')->with('error', 'You are already enrolled in this course for ' . $activeSemester->name . '.');
+        }
+
+        if (!$this->canEnrollInCourse($student->id, $course->id)) {
+            return redirect()->route('dashboard')->with('error', 'You do not meet the prerequisites for this course or enrollment is closed.');
+        }
+
+        // --- Enrollment (Pivot Table) ---
+        $student->courses()->attach($course->id, [
+            'status' => EnrolmentStatus::ENROLLED->value,
+            'semester_id' => $activeSemester->id,
         ]);
 
-        // Redirect back to the dashboard with success message
-        return redirect()->route('dashboard')->with('success', 'You have successfully enrolled in the course.');
+        // --- Transaction Creation (using the Service) ---
+        try {
+            $this->transactionService->createEnrollmentTransaction(
+                $student,
+                $course, // Pass the Course model
+                $activeSemesterId,
+                $course->cost, // Explicitly pass the cost if it's always course.cost
+                'pending'
+            );
+        } catch (\InvalidArgumentException $e) {
+            // Log the error for debugging
+            Log::error("Transaction creation failed during enrollment for student {$student->id}, course {$course->id}: " . $e->getMessage());
+            // Redirect with an error message
+            return redirect()->route('dashboard')->with('error', 'Failed to create transaction for enrollment: ' . $e->getMessage());
+        }
+
+
+        return redirect()->route('dashboard')->with('success', 'You have successfully enrolled in ' . $course->course_code . ' for ' . $activeSemester->name . '.');
     }
 
     function canEnrollInCourse($studentId, $courseId)
     {
         $enrollmentSetting = Setting::where('key', 'users_can_enrol')->value('value');
 
-
         if ($enrollmentSetting == '0') {
-            return false;
+            return false; // Enrollment is globally closed
         }
-
 
         $student = Student::find($studentId);
-
         if (!$student) {
-            return false; // Student not found
-        }
-
-        // Get the student's completed courses (assumes "enrolled" means completed)
-        $completedCourses = $student->courses();
-
-        if (!$completedCourses) {
             return false;
         }
 
-        // Step 2: Get the course and its prerequisites
         $course = Course::find($courseId);
-
         if (!$course) {
-            return false; // Course not found
-        }
-
-        $yearCondition = $this->checkYearPrerequisite($student, $course);
-
-        if (!$yearCondition) {
             return false;
         }
 
+        // Check year prerequisite first
+        if (!$this->checkYearPrerequisite($student, $course)) {
+            return false;
+        }
+
+        // Get student's completed courses (all semesters) by course code
         $completedCourses = $student->courses()
-            ->pluck('course_code')
+            ->wherePivot('status', EnrolmentStatus::COMPLETED->value)
+            ->pluck('course_code') // Ensure you are plucking 'course_code' if 'prerequisite_groups' uses codes
             ->toArray();
 
-        $prerequisiteGroups = Prerequisite::where('course_id', $courseId)->value('prerequisite_groups'); // Assuming a one-to-one relationship
+        // Get prerequisite groups for the course
+        // Assuming Prerequisite model has 'prerequisite_groups' as a JSON-decoded array
+        $prerequisiteEntry = Prerequisite::where('course_id', $courseId)->first();
+        $prerequisiteGroups = $prerequisiteEntry ? $prerequisiteEntry->prerequisite_groups : null;
 
-        if (!$prerequisiteGroups) {
+
+        // If no specific prerequisites are defined, student can enroll (based on year check)
+        if (empty($prerequisiteGroups)) { // Use empty to check for null or empty array
             return true;
         }
 
-        // Decode prerequisites JSON
-        $requiredCourses = $prerequisiteGroups;
-
-        // Step 3: Check if prerequisites are met
-        foreach ($requiredCourses as $group) {
+        // Check prerequisite groups (AND/OR logic)
+        foreach ($prerequisiteGroups as $group) {
             if (is_array($group)) {
-                // OR condition: At least one course must be completed
+                // OR condition: At least one course in the group must be completed
                 $meetsCondition = false;
-                foreach ($group as $requiredCourse) {
-                    if (in_array($requiredCourse, $completedCourses)) {
+                foreach ($group as $requiredCourseCode) {
+                    if (in_array($requiredCourseCode, $completedCourses)) {
                         $meetsCondition = true;
                         break;
                     }
@@ -164,47 +202,44 @@ class EnrolmentController extends Controller
 
     function checkYearPrerequisite($student, $course)
     {
-        $courseYear = ($course->year) - 1;
+        // Assuming 'year' on Course model refers to the recommended study year for that course (e.g., 1, 2)
 
-        if ($courseYear <= 0) {
+        $courseTargetYear = $course->year; // e.g., 1 for Year 1 course, 2 for Year 2 course
+
+        // If the course is a Year 1 course, no year prerequisite check applies from previous years.
+        if ($courseTargetYear <= 1) {
             return true;
         }
-        // Get all course IDs for the student's current year
-        $yearCourses = Course::where('year', $courseYear)->pluck('id')->toArray();
 
-        // Get the student's completed course IDs
-        $completedCourses = $student->courses()->pluck("course_id")->toArray();
+        $previousYear = $courseTargetYear - 1;
 
+        // Get all courses from the *previous* year that are part of the student's program
+        $previousYearCoursesInProgram = Course::where('year', $previousYear)
+            ->whereHas('programs', function ($query) use ($student) {
+                $query->where('program_id', $student->program_id);
+            })->pluck('id')->toArray();
 
-        // Initialize a counter for completed courses
+        // If there are no courses defined for the previous year in the program,
+        // it's considered that the prerequisite is met, preventing false negatives.
+        if (empty($previousYearCoursesInProgram)) {
+            return true;
+        }
+
+        // Get the student's completed course IDs (from all semesters)
+        $completedCoursesIds = $student->courses()->wherePivot('status', EnrolmentStatus::COMPLETED->value)->pluck('course_id')->toArray();
+
+        // Count how many of the previous year's courses the student has completed
         $completedCount = 0;
-
-        foreach ($yearCourses as $yearCourse) {
-            // Since $yearCourse is already an ID, compare it directly
-            if (in_array($yearCourse, $completedCourses)) {
+        foreach ($previousYearCoursesInProgram as $yearCourseId) {
+            if (in_array($yearCourseId, $completedCoursesIds)) {
                 $completedCount++;
             }
         }
 
-        // Avoid division by zero
-        $totalCourses = count($yearCourses);
-        $completedPercentage = $totalCourses > 0 ? ($completedCount / $totalCourses) * 100 : 0;
+        $totalCoursesInPreviousYear = count($previousYearCoursesInProgram);
+        $completedPercentage = $totalCoursesInPreviousYear > 0 ? ($completedCount / $totalCoursesInPreviousYear) * 100 : 0;
 
-        // Check if the student has completed at least 75% of the courses for the current year
-        if ($completedPercentage >= 75) {
-            return true;  // Student can move to the next year or enroll in the course
-        }
-
-        return false;  // Student cannot enroll in the course as prerequisites are not met
-    }
-
-    public function testEnrollment()
-    {
-        $result = $this->canEnrollInCourse(1, 11);
-        if ($result) {
-            return 'Hello Shiva'; // Return a string if true
-        } else {
-            return 'Hello shiva'; // Return a string if false
-        }
+        // Check if the student has completed at least 75% of the courses for the previous year
+        return $completedPercentage >= 75;
     }
 }
