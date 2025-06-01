@@ -7,154 +7,106 @@ use App\Models\User;
 use App\Models\Student;
 use App\Models\Program;
 use App\Models\Course;
+use App\Models\Transaction;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class StudentSeeder extends Seeder
 {
     public function run()
     {
-        // Create mock program data (this assumes you already have programs in the database)
-        // If you don't, create them first using a separate seeder
-        $program = Program::first();  // Assuming a program already exists in the 'programs' table
+        DB::transaction(function () {
+            $program = Program::first();
 
-        $studentData = [
-            'user_id' => null,  // Will be set later to the created User ID
-            'student_id' => 'S11209162', // Unique student ID
-            'first_name' => 'Pui',
-            'last_name' => 'Chen',
-            'dob' => '2000-03-15',  // Date of Birth
-            'email' => 'S11209162@student.usp.ac.fj',
-            'phone' => '1234567890',
-            'program_id' => $program ? $program->id : null,  // Optional: assign to an existing program
-            'enrollment_year' => Carbon::now()->year,  // Current year
-        ];
+            if (!$program) {
+                $this->command->warn('No programs found. Please run ProgramSeeder first.');
+                return;
+            }
 
-        // Create the user for this student
-        $user = User::create([
-            'name' => $studentData['first_name'] . ' ' . $studentData['last_name'],
-            'email' => $studentData['email'],
-            'password' => Hash::make('S11209162'),
-        ]);
+            $studentsToCreate = [
+                [
+                    'first_name' => 'Pui',
+                    'last_name' => 'Chen',
+                    'student_id_prefix' => 'S11209162',
+                    'dob' => '2000-03-15',
+                    'phone' => '1234567890',
+                    'grade' => 3.5,
+                ],
+                [
+                    'first_name' => 'Aryan',
+                    'last_name' => 'Sharma',
+                    'student_id_prefix' => 'S11210082',
+                    'dob' => '2003-04-08',
+                    'phone' => '7777777',
+                    'grade' => 3.5,
+                ],
+                [
+                    'first_name' => 'Pranav',
+                    'last_name' => 'Chand',
+                    'student_id_prefix' => 'S11171153',
+                    'dob' => '2000-08-04',
+                    'phone' => '9034927',
+                    'grade' => 3.5,
+                ],
+            ];
 
+            $firstCourse = Course::first();
 
-        $user->assignRole('student');
+            if (!$firstCourse) {
+                $this->command->warn('No courses found. Please ensure courses are seeded and have a "cost" attribute.');
+                return;
+            }
 
-        // Set the user_id for the student data
-        $studentData['user_id'] = $user->id;
+            // Ensure the course has a 'cost' attribute; otherwise, transactions might fail.
+            if (!isset($firstCourse->cost)) {
+                $this->command->error('The first course does not have a "cost" attribute. Please ensure your Course model and migration include it.');
+                return;
+            }
 
-        // Create the student record
-        $student = Student::create($studentData);
+            foreach ($studentsToCreate as $studentData) {
+                $studentId = $studentData['student_id_prefix'];
+                $email = strtolower($studentId) . '@student.usp.ac.fj';
+                $fullName = $studentData['first_name'] . ' ' . $studentData['last_name'];
 
+                $user = User::create([
+                    'name' => $fullName,
+                    'email' => $email,
+                    'password' => Hash::make($studentId),
+                ]);
 
-        $courses = Course::take(1)->get();
-        // Attach first course with completed status and GPA (grade)
-        foreach ($courses as $course) {
-            $student->courses()->attach($course->id, [
-                'grade' => 3.5,  // Example grade for completed course
-                'status' => EnrolmentStatus::COMPLETED->value,  // Example status - completed
-            ]);
-        }
+                $user->assignRole('student');
 
-        // // Attach second course with enrolled status (no grade)
-        // $courses = Course::skip(1)->take(1)->get();  // Skip the first course and take the next one
-        // foreach ($courses as $course) {
-        //     $student->courses()->attach($course->id, [
-        //         'grade' => 3.5,  // Example grade for completed course
-        //         'status' => EnrolmentStatus::COMPLETED->value,  // Example status - completed
-        //     ]);
-        // }
+                $student = Student::create([
+                    'user_id' => $user->id,
+                    'student_id' => $studentId,
+                    'first_name' => $studentData['first_name'],
+                    'last_name' => $studentData['last_name'],
+                    'dob' => $studentData['dob'],
+                    'email' => $email,
+                    'phone' => $studentData['phone'],
+                    'program_id' => $program->id,
+                    'enrollment_year' => Carbon::now()->year,
+                ]);
 
-        $studentData2 = [
-            'user_id' => null,  // Will be set later to the created User ID
-            'student_id' => 'S11210082', // Unique student ID
-            'first_name' => 'Aryan',
-            'last_name' => 'Sharma',
-            'dob' => '2003-04-08',  // Date of Birth
-            'email' => 's11210082@student.usp.ac.fj',
-            'phone' => '7777777',
-            'program_id' => 1,  // Optional: assign to an existing program
-            'enrollment_year' => Carbon::now()->year,  // Current year
-        ];
+                $student->courses()->attach($firstCourse->id, [
+                    'grade' => $studentData['grade'],
+                    'status' => EnrolmentStatus::COMPLETED->value,
+                ]);
 
-        // Create the user for this student
-        $user2 = User::create([
-            'name' => $studentData2['first_name'] . ' ' . $studentData2['last_name'],
-            'email' => $studentData2['email'],
-            'password' => Hash::make('S11210082'),  // Default password
-        ]);
+                // Create a transaction for the student, using the course's cost
+                $transaction = Transaction::create([
+                    'student_id' => $student->id,
+                    'reference_number' => 'TRN-' . strtoupper(Str::random(10)),
+                    'amount' => $firstCourse->cost, // Amount derived from course cost
+                    'status' => 'completed',
+                ]);
 
-
-        $user2->assignRole('student');
-
-        // Set the user_id for the student data
-        $studentData2['user_id'] = $user2->id;
-
-        // Create the student record
-        $student2 = Student::create($studentData2);
-
-
-        $courses = Course::take(1)->get();
-        // Attach courses with pivot data (grade and enrollment status)
-        foreach ($courses as $course) {
-            $student2->courses()->attach($course->id, [
-                'grade' => 3.5,  // Example grade
-                'status' => EnrolmentStatus::COMPLETED->value,  // Example status
-            ]);
-        }
-
-
-
-
-
-        //USER 3 BELOW
-
-
-        $studentData3 = [
-            'user_id' => null,  // Will be set later to the created User ID
-            'student_id' => 'S11171153', // Unique student ID
-            'first_name' => 'Pranav',
-            'last_name' => 'Chand',
-            'dob' => '2000-08-04',  // Date of Birth
-            'email' => 's11171153@student.usp.ac.fj',
-            'phone' => '9034927',
-            'program_id' => 1,  // Optional: assign to an existing program
-            'enrollment_year' => Carbon::now()->year,  // Current year
-        ];
-
-        // Create the user for this student
-        $user3 = User::create([
-            'name' => $studentData3['first_name'] . ' ' . $studentData2['last_name'],
-            'email' => $studentData3['email'],
-            'password' => Hash::make('S11171153'),  // Default password
-        ]);
-
-
-        $user3->assignRole('student');
-
-        // Set the user_id for the student data
-        $studentData3['user_id'] = $user3->id;
-
-        // Create the student record
-        $student3 = Student::create($studentData3);
-
-        $courses = Course::take(1)->get();
-        // Attach courses with pivot data (grade and enrollment status)
-        foreach ($courses as $course) {
-            $student3->courses()->attach($course->id, [
-                'grade' => 3.5,  // Example grade
-                'status' => EnrolmentStatus::COMPLETED->value,  // Example status
-            ]);
-        }
-
-
-        /*       //To test CS324
-         $cloud_computing = Course::find(13);
-
-         $student->courses()->attach($cloud_computing->id,[
-            'grade'=>3.0,
-            'status'=>EnrolmentStatus::ENROLLED->value,
-         ]); */
+                // Attach the course to the transaction
+                $transaction->courses()->attach($firstCourse->id);
+            }
+        });
     }
 }
