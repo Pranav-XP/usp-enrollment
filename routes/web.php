@@ -11,6 +11,7 @@ use App\Livewire\Auth\Register;
 use App\Http\Controllers\EnrolmentController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\GradeController;
 use App\Http\Controllers\TransactionController;
 
 /* Route::get('/', function () {
@@ -32,7 +33,7 @@ Route::get('courses', [CourseController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('courses');
 
-Route::get('grades', [CourseController::class, 'showGrades'])
+Route::get('grades', [GradeController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('grades');
 

@@ -53,6 +53,7 @@ class Student extends Model
     public function courses(): BelongsToMany
     {
         return $this->belongsToMany(Course::class, 'course_student')
+            ->using(CourseStudent::class)
             ->withPivot('grade', 'status', 'semester_id') // Add semester_id to pivot
             ->withTimestamps();
     }
