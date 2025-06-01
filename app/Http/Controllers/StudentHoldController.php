@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Mail\HoldPlacedNotification;
+use App\Mail\HoldReleasedNotification;
 use App\Models\Student;
 use App\Models\StudentHold;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class StudentHoldController extends Controller
 {
@@ -45,12 +48,14 @@ class StudentHoldController extends Controller
 
         try {
             // StudentHold::create() method now contains the logic to prevent multiple active holds.
-            $student->holds()->create([
+            $hold = $student->holds()->create([
                 'student_id' => $student->id,
                 'reason' => $request->input('reason'),
                 'placed_at' => Carbon::now(),
                 'is_active' => true,
             ]);
+
+            Mail::to($student->email)->send(new HoldPlacedNotification($student, $hold));
 
             return redirect()->route('admin.holds.index', $student)
                 ->with('success', 'Hold successfully placed on ' . $student->first_name . ' ' . $student->last_name . '.');
@@ -70,6 +75,10 @@ class StudentHoldController extends Controller
                 'is_active' => false,
                 'released_at' => Carbon::now(),
             ]);
+
+            $student = $hold->student;
+
+            Mail::to($student->email)->send(new HoldReleasedNotification($student, $hold));
             return redirect()->route('admin.holds.index', $hold->student)
                 ->with('success', 'Hold on ' . $hold->student->first_name . ' ' . $hold->student->last_name . ' has been released.');
         }

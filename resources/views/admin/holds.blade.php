@@ -59,7 +59,7 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
                                         @if ($hold->is_active)
-                                            <form action="{{ route('admin.holds.release', [$student, $hold]) }}" method="POST" onsubmit="return confirm('Are you sure you want to release this hold?');">
+                                            <form action="{{ route('admin.holds.release', $hold) }}" method="POST" onsubmit="return confirm('Are you sure you want to release this hold?');">
                                                 @csrf
                                                 @method('PUT')
                                                 <flux:button variant="primary" type="submit">

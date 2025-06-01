@@ -13,10 +13,16 @@ use App\Http\Controllers\GradeController;
 use App\Http\Controllers\StudentHoldController;
 use App\Http\Controllers\StudentHoldViewController;
 use App\Http\Controllers\TransactionController;
+use App\Mail\MyTestEmail;
+use Illuminate\Support\Facades\Mail;
 
 /* Route::get('/', function () {
     return view('welcome');
 })->name('home'); */
+
+Route::get('/email', function () {
+    Mail::to('pranavchand777@gmail.com')->send(new MyTestEmail);
+});
 
 Route::get('/check-enrollment', [EnrolmentController::class, 'testEnrollment']);
 
