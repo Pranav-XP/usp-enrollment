@@ -33,32 +33,32 @@ class Student extends Model
     public function dob(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => Carbon::parse($value)->format('d M Y'),
+            get: fn($value) => Carbon::parse($value)->format('d M Y'),
         );
     }
 
     // Relationship with User (One-to-One)
-    public function user() : BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class)->withTimestamps();
     }
 
-     // Relationship with Program (Many-to-One)
-     public function program()
-     {
-         return $this->belongsTo(Program::class);
-     }
+    // Relationship with Program (Many-to-One)
+    public function program()
+    {
+        return $this->belongsTo(Program::class);
+    }
 
-     //Many to Many courses
-     public function courses():BelongsToMany
-     {
-        return $this->belongsToMany(Course::class, 'course_student', 'student_id', 'course_id')
-        ->withPivot('grade', 'status')
-        ->withTimestamps();
-     }
+    //Many to Many courses
+    public function courses(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class, 'course_student')
+            ->withPivot('grade', 'status', 'semester_id') // Add semester_id to pivot
+            ->withTimestamps();
+    }
 
-     public function transactions()
-        {
-            return $this->hasMany(Transaction::class);
-        }
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

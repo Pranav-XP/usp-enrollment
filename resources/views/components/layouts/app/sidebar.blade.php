@@ -11,37 +11,57 @@
                 <x-app-logo />
             </a>
 
-            <flux:navlist variant="outline">
-                <flux:navlist.group :heading="__('Menu')" class="grid">
-                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
-                    {{-- Student Navigation Links --}}
-                    @hasrole('student')
-                    <flux:navlist.item icon="list-bullet" :href="route('courses')" :current="request()->routeIs('courses')" wire:navigate>{{ __('Courses') }}</flux:navlist.item>
-                    <flux:navlist.item icon="clipboard-document-check" :href="route('grades')" :current="request()->routeIs('grades')" wire:navigate>{{ __('My Grades') }}</flux:navlist.item>
-                    <flux:navlist.item icon="currency-dollar" :href="route('transactions')" :current="request()->routeIs('transactions')" wire:navigate>{{ __('My Fees') }}</flux:navlist.item>
-                    @endhasrole
-
-                    {{-- Admin Navigation Links --}}
-                    @hasrole('admin')
-                    <flux:navlist.item icon="user-plus" :href="route('admin.register-student')" :current="request()->routeIs('admin.register-student')" wire:navigate>{{ __('Register Student') }}</flux:navlist.item>
-                    
-
-                    <flux:navlist.item icon="adjustments-horizontal" 
-                    :href="route('settings.edit')" 
-                    :current="request()->routeIs('settings.edit')" 
-                    wire:navigate>{{ __('SAS Settings') }}</flux:navlist.item>
-
-                    
-                    <flux:navlist.item icon="pencil" 
-                    :href="route('admin.grades')" 
-                    :current="request()->routeIs('admin.grades')" 
-                    wire:navigate>{{ __('Manage Grades') }}</flux:navlist.item>
-                    {{-- <flux:navlist.item icon="list-bullet" :href="route('course.create')" :current="request()->routeIs('course.create')" wire:navigate>{{ __('Manage courses') }}</flux:navlist.item> --}}
-                    @endhasrole
-                </flux:navlist.group>
-            </flux:navlist>
-
-            <flux:spacer />
+            <div class="flex-col justify-between grow">
+                <flux:navlist variant="outline">
+                    <flux:navlist.group :heading="__('Menu')" class="grid">
+                        <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                        {{-- Student Navigation Links --}}
+                        @hasrole('student')
+                        <flux:navlist.item icon="list-bullet" :href="route('courses')" :current="request()->routeIs('courses')" wire:navigate>{{ __('Courses') }}</flux:navlist.item>
+                        <flux:navlist.item icon="clipboard-document-check" :href="route('grades')" :current="request()->routeIs('grades')" wire:navigate>{{ __('My Grades') }}</flux:navlist.item>
+                        <flux:navlist.item icon="currency-dollar" :href="route('transactions')" :current="request()->routeIs('transactions')" wire:navigate>{{ __('My Fees') }}</flux:navlist.item>
+                        @endhasrole
+                        
+                        {{-- Admin Navigation Links --}}
+                        @hasrole('admin')
+                        <flux:navlist.item icon="user-plus" :href="route('admin.register-student')" :current="request()->routeIs('admin.register-student')" wire:navigate>{{ __('Register Student') }}</flux:navlist.item>
+                        
+                        
+                        <flux:navlist.item icon="adjustments-horizontal" 
+                        :href="route('settings.edit')" 
+                        :current="request()->routeIs('settings.edit')" 
+                        wire:navigate>{{ __('SAS Settings') }}</flux:navlist.item>
+                        
+                        
+                        <flux:navlist.item icon="pencil" 
+                        :href="route('admin.grades')" 
+                        :current="request()->routeIs('admin.grades')" 
+                        wire:navigate>{{ __('Manage Grades') }}</flux:navlist.item>
+                        {{-- <flux:navlist.item icon="list-bullet" :href="route('course.create')" :current="request()->routeIs('course.create')" wire:navigate>{{ __('Manage courses') }}</flux:navlist.item> --}}
+                        @endhasrole
+                    </flux:navlist.group>
+                </flux:navlist>
+                
+                {{-- New section to display Active Semester --}}
+                @if ($activeSemester)
+                <div class="px-4 py-2 mt-4 text-xs font-semibold uppercase text-zinc-500 dark:text-zinc-400">
+                    Current Semester
+                </div>
+                <div class="px-4 text-sm text-zinc-700 dark:text-zinc-200">
+                    {{ $activeSemester->year }} - Semester {{ $activeSemester->term }}
+                </div>
+                @else
+                <div class="px-4 py-2 mt-4 text-xs font-semibold uppercase text-zinc-500 dark:text-zinc-400">
+                    Semester Status
+                </div>
+                <div class="px-4 text-sm text-zinc-700 dark:text-zinc-200">
+                    No active semester
+                </div>
+                @endif
+                {{-- End new section --}}
+            </div>
+                
+                <flux:spacer />
 
             <flux:navlist variant="outline">
                 <flux:navlist.item icon="circle-help" href="https://www.usp.ac.fj/sas/student-administrative-services/frequently-asked-questions/" target="_blank">
