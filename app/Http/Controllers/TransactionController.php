@@ -15,11 +15,18 @@ class TransactionController extends Controller
 
         // Retrieve the student based on the authenticated user's ID
         $student = Student::where('user_id', $id)->first();
-        $transactions = $student->transactions()->with('course')->latest()->get();
+
+        // Check if student exists to prevent errors if no student is found for the user
+        if (!$student) {
+            return view('fees', ['transactions' => collect(), 'totalAmount' => 0]);
+        }
+
+        // Eager load the 'courses' relationship on transactions
+        $transactions = $student->transactions()->with('courses')->latest()->get();
 
         // Calculate total amount
-$totalAmount = $transactions->sum('amount');
+        $totalAmount = $transactions->sum('amount');
 
-        return view('fees', compact('transactions','totalAmount'));
+        return view('fees', compact('transactions', 'totalAmount'));
     }
 }
