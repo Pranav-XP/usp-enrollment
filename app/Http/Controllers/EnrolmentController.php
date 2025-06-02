@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\EnrolmentStatus;
+use App\Enums\EnrolmentStatus;
 use App\Models\Course;
 use App\Models\Prerequisite;
 use App\Models\Student;

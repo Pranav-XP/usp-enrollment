@@ -1,8 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Enums;
 
-enum EnrolmentStatus:string
+enum EnrolmentStatus: string
 {
     case ENROLLED = 'enrolled';
     case COMPLETED = 'completed';

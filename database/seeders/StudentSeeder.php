@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\EnrolmentStatus;
+use App\Enums\EnrolmentStatus;
 use App\Models\User;
 use App\Models\Student;
 use App\Models\Program;
@@ -59,6 +59,8 @@ class StudentSeeder extends Seeder
                     'dob' => '2000-03-15',
                     'phone' => '1234567890',
                     'grade' => 3.5,
+                    'postal_address' => $this->generateRandomPostalAddress(),
+                    'residential_address' => $this->generateRandomResidentialAddress(),
                 ],
                 [
                     'first_name' => 'Aryan',
@@ -67,6 +69,8 @@ class StudentSeeder extends Seeder
                     'dob' => '2003-04-08',
                     'phone' => '7777777',
                     'grade' => 3.5,
+                    'postal_address' => $this->generateRandomPostalAddress(),
+                    'residential_address' => $this->generateRandomResidentialAddress(),
                 ],
                 [
                     'first_name' => 'Pranav',
@@ -75,6 +79,8 @@ class StudentSeeder extends Seeder
                     'dob' => '2000-08-04',
                     'phone' => '9034927',
                     'grade' => 3.5,
+                    'postal_address' => $this->generateRandomPostalAddress(),
+                    'residential_address' => $this->generateRandomResidentialAddress(),
                 ],
             ];
 
@@ -107,9 +113,10 @@ class StudentSeeder extends Seeder
                     'phone' => $studentData['phone'],
                     'program_id' => $program->id,
                     'enrollment_year' => $studentEnrollmentYear,
+                    'postal_address' => $studentData['postal_address'],
+                    'residential_address' => $studentData['residential_address'],
                 ]);
 
-                // --- NEW LOGIC: Determine the correct semester ID for the course's offering ---
                 $courseSemesterId = null;
 
                 // Prioritize Semester 1 if the course is offered in it
@@ -169,5 +176,33 @@ class StudentSeeder extends Seeder
                 $transaction->courses()->attach($firstCourse->id);
             }
         });
+    }
+
+    /**
+     * Generates a random postal address for demonstration.
+     * Format: P.O. Box [Number], [Town/City], Fiji.
+     */
+    function generateRandomPostalAddress(): string
+    {
+        $poBox = rand(100, 9999);
+        $cities = ['Suva', 'Lautoka', 'Nadi', 'Labasa', 'Sigatoka', 'Rakiraki'];
+        $city = $cities[array_rand($cities)];
+        return "P.O. Box {$poBox}, {$city}, Fiji";
+    }
+
+    /**
+     * Generates a random residential address for demonstration.
+     * Format: [House Number], [Street Name] St, [Suburb], [Town/City], Fiji.
+     */
+    function generateRandomResidentialAddress(): string
+    {
+        $houseNum = rand(1, 200);
+        $streetNames = ['Main', 'Central', 'Palm', 'Beach', 'Valley', 'Hillside', 'Garden', 'Coastal', 'Ocean View'];
+        $street = $streetNames[array_rand($streetNames)] . ' St';
+        $suburbs = ['Martintar', 'Namaka', 'Wailoaloa', 'Delainavesi', 'Samabula', 'Grants Hill', 'Waiyavi', 'Tavua Town'];
+        $suburb = $suburbs[array_rand($suburbs)];
+        $cities = ['Suva', 'Lautoka', 'Nadi']; // Common cities for residential
+        $city = $cities[array_rand($cities)];
+        return "{$houseNum} {$street}, {$suburb}, {$city}, Fiji";
     }
 }

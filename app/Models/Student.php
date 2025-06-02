@@ -23,7 +23,9 @@ class Student extends Model
         'email',
         'phone',
         'program_id',
-        'enrollment_year'
+        'enrollment_year',
+        'postal_address',
+        'residential_address',
     ];
 
     protected $casts = [
@@ -96,5 +98,14 @@ class Student extends Model
         }
         // Fallback to query if not eager loaded
         return $this->holds()->active()->first();
+    }
+
+    /**
+     * Relationship with GradeRecheckApplication (One-to-Many).
+     * @return HasMany
+     */
+    public function recheckApplications(): HasMany
+    {
+        return $this->hasMany(GradeRecheckApplication::class);
     }
 }

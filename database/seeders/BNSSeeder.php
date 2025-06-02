@@ -13,6 +13,7 @@ class BNSSeeder extends Seeder
      */
     public function run(): void
     {
+
         $courses = [
             //YEAR 1
             //1['code' => 'CS111', 'title' => 'Introduction to Computing Science', 'year' => 1, 'cost' => 500, 'semester_1' => true, 'semester_2' => false],
@@ -24,7 +25,7 @@ class BNSSeeder extends Seeder
             //7['code' => 'ST131', 'title' => 'Introduction to Statistics', 'year' => 1, 'cost' => 500, 'semester_1' => false, 'semester_2' => true],
             //8['code' => 'UU100A', 'title' => 'Communication and Information Literacy', 'year' => 1, 'cost' => 500, 'semester_1' => true, 'semester_2' => false],, 'description' => ''
             //9['code' => 'UU114', 'title' => 'English for Academic Purposes', 'year' => 1, 'cost' => 500, 'semester_1' => false, 'semester_2' => true],
-            
+
             //YEAR 2
             //10['code' => 'CS211', 'title' => 'Data Structures and Algorithms', 'year' => 2, 'cost' => 600, 'semester_1' => true, 'semester_2' => false],
             //11['code' => 'CS214', 'title' => 'Algorithm Analysis', 'year' => 2, 'cost' => 600, 'semester_1' => false, 'semester_2' => true],
@@ -34,7 +35,7 @@ class BNSSeeder extends Seeder
             //16['code' => 'IS221', 'title' => 'Information Systems Analysis', 'year' => 2, 'cost' => 600, 'semester_1' => false, 'semester_2' => true],
             //17['code' => 'IS222', 'title' => 'Enterprise Information Systems', 'year' => 2, 'cost' => 600, 'semester_1' => true, 'semester_2' => false],
             //18['code' => 'UU200', 'title' => 'Ethics and Governance', 'year' => 2, 'cost' => 600, 'semester_1' => false, 'semester_2' => true],
-            
+
             //YEAR 3
             //19['code' => 'CS310', 'title' => 'Advanced Software Engineering', 'year' => 3, 'cost' => 700, 'semester_1' => false, 'semester_2' => true],
             //20['code' => 'CS311', 'title' => 'Artificial Intelligence', 'year' => 3, 'cost' => 700, 'semester_1' => true, 'semester_2' => false],
@@ -44,7 +45,7 @@ class BNSSeeder extends Seeder
             ['code' => 'CS351', 'title' => 'Network Design & Administration', 'year' => 3, 'cost' => 700, 'semester_1' => true, 'semester_2' => false, 'description' => 'This advanced networking course prepares students to tackle real-world networking challenges, focusing on system administration, maintenance, and ensuring network resilience in an operational environment.'],
             //23['code' => 'CS352', 'title' => 'Software Testing', 'year' => 3, 'cost' => 700, 'semester_1' => false, 'semester_2' => true],
             //26['code' => 'IS333', 'title' => 'IT Project Management', 'year' => 3, 'cost' => 700, 'semester_1' => true, 'semester_2' => false],
-            
+
             //YEAR 4
             //28['code' => 'CS403', 'title' => 'Big Data Analytics', 'year' => 4, 'cost' => 800, 'semester_1' => false, 'semester_2' => true],
             //29['code' => 'CS412', 'title' => 'Blockchain Technology', 'year' => 4, 'cost' => 800, 'semester_1' => true, 'semester_2' => false],
@@ -64,6 +65,7 @@ class BNSSeeder extends Seeder
                 'semester_2' => $course['semester_2'],
                 'created_at' => now(),
                 'updated_at' => now(),
+                'lecturer_name' => fake()->name(),
             ]);
 
             // Insert into pivot table
@@ -73,10 +75,34 @@ class BNSSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-            }
+        }
 
-            $matchingCourseIds = [1,2,4,5,6,7,8,9,10,11,
-    12,13,16,17,18,19,20,21,23,26,28,29,30,31];
+        $matchingCourseIds = [
+            1,
+            2,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            23,
+            26,
+            28,
+            29,
+            30,
+            31
+        ];
 
         $insertData = [];
 
@@ -91,6 +117,5 @@ class BNSSeeder extends Seeder
 
         // Insert into pivot table
         DB::table('course_program')->insert($insertData);
-
     }
 }

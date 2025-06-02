@@ -65,6 +65,7 @@ class BSESeeder extends Seeder
                 'semester_2' => $course['semester_2'],
                 'created_at' => now(),
                 'updated_at' => now(),
+                'lecturer_name' => fake()->name(),
             ]);
 
             // Insert into pivot table
