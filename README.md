@@ -73,7 +73,7 @@ Follow these steps to get the USPEnrol project up and running on your local mach
     MAIL_USERNAME=your_gmail_username@gmail.com # Your Gmail address
     MAIL_PASSWORD=your_gmail_app_password      # Your Gmail App Password
     MAIL_ENCRYPTION=tls
-    MAIL_FROM_ADDRESS="<span class="math-inline">\{MAIL\_USERNAME\}"
+    MAIL_FROM_ADDRESS="<{MAIL_USERNAME}"
 MAIL\_FROM\_NAME\="</span>{APP_NAME}"
     ```
     * **Note on Gmail App Password:** If you're using Gmail SMTP, you'll likely need to generate an "App password" from your Google Account security settings, as regular passwords often don't work for SMTP authentication anymore.
