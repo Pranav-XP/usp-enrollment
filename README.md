@@ -37,7 +37,7 @@ Before running this project, ensure you have the following installed on your sys
 * **Composer:** Latest version
 * **Node.js & npm (or Yarn):** Latest LTS version
 * **MySQL:** Database server
-* **Web Server:** Nginx or Apache (or use Laravel's built-in `php artisan serve`)
+* **Web Server:** Nginx or Apache (or use Laravel's built-in `composer run dev`)
 
 ## Installation Guide
 
@@ -45,7 +45,7 @@ Follow these steps to get the USPEnrol project up and running on your local mach
 
 1.  **Clone the Repository:**
     ```bash
-    git clone <your-repository-url>
+    git clone <repo-url>
     cd USPEnrol
     ```
 
