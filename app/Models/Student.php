@@ -23,7 +23,9 @@ class Student extends Model
         'email',
         'phone',
         'program_id',
-        'enrollment_year'
+        'enrollment_year',
+        'postal_address',
+        'residential_address',
     ];
 
     protected $casts = [

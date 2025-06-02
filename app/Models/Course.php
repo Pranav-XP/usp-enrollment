@@ -15,7 +15,8 @@ class Course extends Model
         'cost',
         'semester_1',
         'semester_2',
-        'year'
+        'year',
+        'lecturer_name',
     ];
 
     public function programs(): BelongsToMany

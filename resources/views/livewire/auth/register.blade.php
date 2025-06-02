@@ -1,56 +1,46 @@
+@if ($generalError)
+    <div class="text-red-500 bg-red-100 border border-red-400 p-3 rounded mb-4">
+        {{ $generalError }}
+    </div>
+@endif
 <form wire:submit="register" class="flex flex-col gap-6">
     <flux:heading size="xl">Register Student</flux:heading>
-<flux:subheading>Register student information below.</flux:subheading>
+    <flux:subheading>Register student information below.</flux:subheading>
 
-    <!-- First Name -->
     <flux:input
         wire:model="first_name"
         :label="__('First Name')"
         type="text"
         required
         autofocus
-        autocomplete="name"
+        autocomplete="given-name"
         :placeholder="__('First name')"
     />
 
-    <!-- Last Name -->
     <flux:input
         wire:model="last_name"
         :label="__('Last Name')"
         type="text"
         required
-        autofocus
-        autocomplete="name"
+        autocomplete="family-name"
         :placeholder="__('Last name')"
     />
 
-    <!-- Student ID -->
     <flux:input
         wire:model="student_id"
         :label="__('Student ID')"
         type="text"
         required
-        autofocus
         :placeholder="__('SXXXXXXXX')"
+        autocomplete="username"
     />
 
     <flux:select wire:model="programId" placeholder="Assign program">
         @foreach ($programs as $program)
-            <flux:select.option  value="{{ $program->id }}">{{ $program->name}}</flux:select.option>
+            <flux:select.option value="{{ $program->id }}">{{ $program->name}}</flux:select.option>
         @endforeach
     </flux:select>
 
-    <!-- Email Address -->
-    <flux:input
-        wire:model="email"
-        :label="__('Email address')"
-        type="email"
-        required
-        autocomplete="email"
-        placeholder="email@example.com"
-    />
-
-    <!-- DOB -->
     <flux:input
         wire:model="dob"
         :label="__('Date of Birth')"
@@ -59,35 +49,32 @@
         max="2999-12-31"
     />
 
-    <!-- Phone Number -->
     <flux:input
         wire:model="phone"
         :label="__('Phone number')"
-        type="phone"
+        type="tel" {{-- Changed type to tel for phone numbers --}}
         required
-        autocomplete="phone"
+        autocomplete="tel"
         placeholder="777 7777"
     />
 
-    <!-- Password -->
     <flux:input
-        wire:model="password"
-        :label="__('Password')"
-        type="password"
-        required
-        autocomplete="new-password"
-        :placeholder="__('Password')"
+        wire:model="postal_address"
+        :label="__('Postal Address')"
+        type="text"
+        autocomplete="postal-code" {{-- Appropriate autocomplete for postal address --}}
+        :placeholder="__('P.O. Box 123, City, Country')"
     />
 
-    <!-- Confirm Password -->
     <flux:input
-        wire:model="password_confirmation"
-        :label="__('Confirm password')"
-        type="password"
-        required
-        autocomplete="new-password"
-        :placeholder="__('Confirm password')"
+        wire:model="residential_address"
+        :label="__('Residential Address')"
+        type="text"
+        autocomplete="street-address" {{-- Appropriate autocomplete for residential address --}}
+        :placeholder="__('House No, Street, City, Country')"
     />
+
+    {{-- Password and Confirm Password fields are removed as password is now student ID --}}
 
     <div class="flex items-center justify-end">
         <flux:button type="submit" variant="primary" class="w-full">

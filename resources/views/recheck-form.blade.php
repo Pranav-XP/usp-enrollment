@@ -25,7 +25,7 @@
                 {{-- Full Name --}}
                 <flux:field>
                     <flux:label for="full_name">Full Name</flux:label>
-                    <flux:input id="full_name" type="text" name="full_name" value="{{ old('full_name', $student->first_name . ' ' . $student->last_name) }}" required />
+                    <flux:input id="full_name" type="text" name="full_name" value="{{ old('full_name', $student->first_name . ' ' . $student->last_name) }}" readonly />
                     <flux:error name="full_name" />
                 </flux:field>
             </div>
@@ -33,7 +33,7 @@
             {{-- Postal Address --}}
             <flux:field>
                 <flux:label for="postal_address">Postal Address</flux:label>
-                <flux:input id="postal_address" type="text" name="postal_address" value="{{ old('postal_address', $student->postal_address) }}" />
+                <flux:input id="postal_address" type="text" name="postal_address" value="{{ old('postal_address', $student->postal_address) }}" readonly/>
                 <flux:error name="postal_address" />
             </flux:field>
 
@@ -41,14 +41,14 @@
                 {{-- Date of Birth --}}
                 <flux:field>
                     <flux:label for="date_of_birth">Date of Birth</flux:label>
-                    <flux:input id="date_of_birth" type="date" name="date_of_birth" value="{{ old('date_of_birth', $student->dob ? \Carbon\Carbon::parse($student->dob)->format('Y-m-d') : '') }}" />
+                    <flux:input id="date_of_birth" type="date" name="date_of_birth" value="{{ old('date_of_birth', $student->dob ? \Carbon\Carbon::parse($student->dob)->format('Y-m-d') : '') }}" readonly />
                     <flux:error name="date_of_birth" />
                 </flux:field>
 
                 {{-- Telephone --}}
                 <flux:field>
                     <flux:label for="telephone">Telephone</flux:label>
-                    <flux:input id="telephone" type="tel" name="telephone" value="{{ old('telephone', $student->phone) }}" required />
+                    <flux:input id="telephone" type="tel" name="telephone" value="{{ old('telephone', $student->phone) }}" readonly/>
                     <flux:error name="telephone" />
                 </flux:field>
             </div>
@@ -56,11 +56,11 @@
             {{-- Email --}}
             <flux:field>
                 <flux:label for="email">Email</flux:label>
-                <flux:input id="email" type="email" name="email" value="{{ old('email', $student->email) }}" required />
+                <flux:input id="email" type="email" name="email" value="{{ old('email', $student->email) }}" required readonly />
                 <flux:error name="email" />
             </flux:field>
 
-            {{-- Sponsorship Status (FIXED HERE) --}}
+           {{-- Sponsorship Status (FIXED HERE) --}}
             <flux:field>
                 <flux:label for="sponsorship_status">Are you sponsored or private student?</flux:label>
                 <flux:select id="sponsorship_status" name="sponsorship_status" required>
@@ -72,6 +72,7 @@
                 </flux:select>
                 <flux:error name="sponsorship_status" />
             </flux:field>
+
 
             {{-- SECTION B: REQUEST DETAILS --}}
             <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100 border-b pb-2 mb-4 mt-8">REQUEST DETAILS</h3>
@@ -95,7 +96,8 @@
             {{-- Course Lecturer Name --}}
             <flux:field>
                 <flux:label for="course_lecturer_name">Course Lecturer Name</flux:label>
-                <flux:input id="course_lecturer_name" type="text" name="course_lecturer_name" value="{{ old('course_lecturer_name') }}" required />
+                {{-- Autofilled and set to readonly --}}
+                <flux:input id="course_lecturer_name" type="text" name="course_lecturer_name" value="{{ old('course_lecturer_name', $course->lecturer_name) }}" readonly required />
                 <flux:error name="course_lecturer_name" />
             </flux:field>
 

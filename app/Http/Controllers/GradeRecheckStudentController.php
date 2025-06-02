@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Enums\EnrolmentStatus;
 use App\Enums\GradeRecheckStatus;
+use App\Mail\RecheckApplicationSubmittedMail;
 use App\Models\Course;
 use App\Models\CourseStudent;
 use App\Models\GradeRecheckApplication;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
@@ -93,7 +95,7 @@ class GradeRecheckStudentController extends Controller
         }
 
         // Create the application
-        GradeRecheckApplication::create([
+        $application = GradeRecheckApplication::create([
             'student_id'                => $student->id,
             'course_id'                 => $course->id,
             'full_name'                 => $request->full_name,
@@ -109,6 +111,9 @@ class GradeRecheckStudentController extends Controller
             'payment_confirmation_path' => $paymentConfirmationPath,
             'status'                    => GradeRecheckStatus::PENDING, // Default status
         ]);
+
+        // --- Send Email Confirmation to Student ---
+        Mail::to($application->email)->send(new RecheckApplicationSubmittedMail($application));
 
         return redirect()->route('grades')->with('success', 'Your grade recheck application has been submitted successfully!');
     }

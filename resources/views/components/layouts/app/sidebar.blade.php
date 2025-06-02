@@ -38,6 +38,11 @@
                         :href="route('admin.students')" 
                         :current="request()->routeIs('admin.students')" 
                         wire:navigate>{{ __('Manage Students') }}</flux:navlist.item>
+
+                        <flux:navlist.item icon="pencil" 
+                        :href="route('admin.recheck.index')" 
+                        :current="request()->routeIs('admin.recheck.index')" 
+                        wire:navigate>{{ __('Grade Recheck') }}</flux:navlist.item>
                         {{-- <flux:navlist.item icon="list-bullet" :href="route('course.create')" :current="request()->routeIs('course.create')" wire:navigate>{{ __('Manage courses') }}</flux:navlist.item> --}}
                         @endhasrole
                     </flux:navlist.group>

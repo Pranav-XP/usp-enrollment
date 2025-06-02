@@ -10,6 +10,7 @@ use App\Http\Controllers\EnrolmentController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GradeController;
+use App\Http\Controllers\GradeRecheckAdminController;
 use App\Http\Controllers\GradeRecheckStudentController;
 use App\Http\Controllers\StudentHoldController;
 use App\Http\Controllers\StudentHoldViewController;
@@ -52,7 +53,9 @@ Route::group(['middleware' => ['can:manage app']], function () {
     Route::get('admin/register-student', Register::class)->name('admin.register-student');
     Route::get('/settings', [SettingController::class, 'edit'])->name('settings.edit');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
+
     Route::get('/admin/students', [AdminController::class, 'showStudentsList'])->name('admin.students');
+
     Route::get('/admin/grades/{studentId}', [AdminController::class, 'showGradeForm'])->name('admin.students.gradeForm');
     Route::put('/admin/grades/{studentId}', [AdminController::class, 'updateGrades'])->name('admin.students.updateGrade');
 
@@ -60,6 +63,11 @@ Route::group(['middleware' => ['can:manage app']], function () {
     Route::get('/admin/holds/{student}/create', [StudentHoldController::class, 'create'])->name('admin.holds.create'); // Form to place a new hold
     Route::post('/admin/holds/{student}', [StudentHoldController::class, 'store'])->name('admin.holds.store');      // Store a new hold
     Route::put('holds/{hold}/release', [StudentHoldController::class, 'release'])->name('admin.holds.release'); // Release an active hold
+
+    Route::get('/admin/recheck', [GradeRecheckAdminController::class, 'index'])->name('admin.recheck.index');
+    Route::get('/admin/recheck/{id}', [GradeRecheckAdminController::class, 'show'])->name('admin.recheck.show');
+    Route::put('/admin/recheck/{id}/update', [GradeRecheckAdminController::class, 'updateStatus'])->name('admin.recheck.update');
+    Route::get('/admin/recheck/{applicationId}/download', [GradeRecheckAdminController::class, 'downloadPaymentConfirmation'])->name('admin.recheck.download');
 });
 
 require __DIR__ . '/auth.php';
