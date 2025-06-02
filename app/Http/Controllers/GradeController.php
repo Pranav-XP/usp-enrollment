@@ -40,6 +40,7 @@ class GradeController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
+    #[LoggerAspect]
     public function download()
     {
         // Get the authenticated student's ID
