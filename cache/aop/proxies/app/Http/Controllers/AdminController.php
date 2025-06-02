@@ -10,7 +10,7 @@ use App\Models\Course;
 
 use Illuminate\Support\Facades\DB;
 
-class AdminController extends Controller
+class AdminController__AopProxied extends Controller
 {
     // Show list of students
     public function showStudentsList()
@@ -91,3 +91,5 @@ class AdminController extends Controller
         }
     }
 }
+
+include_once '/Users/pranav/Code/usp-enrollment/cache/aop/woven/app/Http/Controllers/AdminController.php';

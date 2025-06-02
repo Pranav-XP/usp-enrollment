@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Student;
-use App\Models\Course;
-use App\Models\CourseStudent;
-use App\Models\Program;
+use App\Aspects\LoggerAspect;
 use App\Enums\GradeRecheckStatus;
 use Spatie\LaravelPdf\Facades\Pdf;
 use Illuminate\Http\Request;
@@ -15,6 +12,8 @@ use Carbon\Carbon;
 
 class GradeController extends Controller
 {
+
+    #[LoggerAspect]
     public function index()
     {
         $userId = Auth::id();
@@ -41,7 +40,7 @@ class GradeController extends Controller
      */
     public function download()
     {
-               // Get the authenticated student's ID
+        // Get the authenticated student's ID
         $studentId = Auth::user()->student->id; // Assuming student() returns a student instance with an 'id'
 
         // Fetch the student details and their program separately
@@ -69,7 +68,8 @@ class GradeController extends Controller
         $now = Carbon::now()->format('d F Y, h:i A');
 
         // Pass both student data and the course-student records to the PDF view
-        return Pdf::view('grade-report', compact('student', 'completedCourseStudents', 'gpa','now'))
+        return Pdf::view('grade-report', compact('student', 'completedCourseStudents', 'gpa', 'now'))
             ->name('grade_report_' . $student->student_id . '_' . Carbon::now()->format('YmdHis') . '.pdf')
-            ->download();    }
+            ->download();
+    }
 }

@@ -14,7 +14,7 @@ use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 #[Layout('components.layouts.auth')]
-class Login extends Component
+class Login__AopProxied extends Component
 {
     #[Validate('required|string|email')]
     public string $email = '';
@@ -51,7 +51,7 @@ class Login extends Component
     /**
      * Ensure the authentication request is not rate limited.
      */
-    protected function ensureIsNotRateLimited(): void
+    public function ensureIsNotRateLimited(): void
     {
         if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
@@ -72,8 +72,10 @@ class Login extends Component
     /**
      * Get the authentication rate limiting throttle key.
      */
-    protected function throttleKey(): string
+    public function throttleKey(): string
     {
         return Str::transliterate(Str::lower($this->email) . '|' . request()->ip());
     }
 }
+
+include_once '/Users/pranav/Code/usp-enrollment/cache/aop/woven/app/Livewire/Auth/Login.php';

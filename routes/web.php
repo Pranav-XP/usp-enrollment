@@ -1,5 +1,6 @@
 <?php
 
+use App\Aspects\LoggerAspect;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -18,12 +19,6 @@ use App\Http\Controllers\TransactionController;
 use App\Mail\MyTestEmail;
 use Illuminate\Support\Facades\Mail;
 
-/* Route::get('/', function () {
-    return view('welcome');
-})->name('home'); */
-
-
-Route::get('/check-enrollment', [EnrolmentController::class, 'testEnrollment']);
 
 Route::middleware(['auth', 'verified', 'role:student|admin', 'check-hold'])->group(function () {
     Route::get('/dashboard', [EnrolmentController::class, 'dashboard'])->name('dashboard');
@@ -34,6 +29,7 @@ Route::middleware(['auth', 'verified', 'role:student', 'check-hold'])->group(fun
     Route::get('/grades', [GradeController::class, 'index'])->name('grades');
 
     Route::get('/grades/{courseId}/recheck', [GradeRecheckStudentController::class, 'create'])->name('recheck.create');
+
     Route::post('/grades/recheck', [GradeRecheckStudentController::class, 'store'])
         ->name('recheck.store');
         

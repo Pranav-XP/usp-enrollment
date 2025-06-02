@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Aspects\LoggerAspect;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class StudentHoldViewController extends Controller
 {
+    #[LoggerAspect]
     public function index()
     {
         $user = Auth::user();

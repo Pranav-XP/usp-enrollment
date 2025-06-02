@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Aspects\LoggerAspect;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Mail\HoldPlacedNotification;
@@ -39,6 +40,7 @@ class StudentHoldController extends Controller
     /**
      * Store a newly created hold in storage.
      */
+    #[LoggerAspect]
     public function store(Request $request, Student $student)
     {
         $request->validate([
@@ -67,6 +69,7 @@ class StudentHoldController extends Controller
     /**
      * Release an active hold.
      */
+    #[LoggerAspect]
     public function release(StudentHold $hold)
     {
 

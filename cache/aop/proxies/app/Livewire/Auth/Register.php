@@ -16,7 +16,7 @@ use App\Models\Student;
 use Carbon\Carbon;
 
 #[Layout('components.layouts.app')]
-class Register extends Component
+class Register__AopProxied extends Component
 {
     public $programs;
 
@@ -129,3 +129,5 @@ class Register extends Component
         $this->programs = Program::all();
     }
 }
+
+include_once '/Users/pranav/Code/usp-enrollment/cache/aop/woven/app/Livewire/Auth/Register.php';
