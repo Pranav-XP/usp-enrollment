@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Aspects\LoggerAspect;
 use Illuminate\Http\Request;
 use App\Models\Setting;
 
@@ -12,6 +13,8 @@ class SettingController extends Controller
         $allSettings = Setting::get(['key', 'value']);
         return view('admin.settings', ['settings' => $allSettings]);
     }
+
+    #[LoggerAspect]
     public function update(Request $request)
     {
         $inputData = $request->except('_token');

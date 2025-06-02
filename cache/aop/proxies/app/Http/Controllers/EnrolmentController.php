@@ -17,9 +17,9 @@ use Illuminate\Support\Facades\Log;
 
 // use Illuminate\Support\Str; // No longer directly used for UUID generation here
 
-class EnrolmentController extends Controller
+class EnrolmentController__AopProxied extends Controller
 {
-    protected $transactionService;
+    public $transactionService;
 
     // Constructor to inject the service
     public function __construct(TransactionService $transactionService)
@@ -245,3 +245,5 @@ class EnrolmentController extends Controller
         return $completedPercentage >= 75;
     }
 }
+
+include_once '/Users/pranav/Code/usp-enrollment/cache/aop/woven/app/Http/Controllers/EnrolmentController.php';
