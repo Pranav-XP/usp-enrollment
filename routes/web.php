@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\SemesterController;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -82,6 +82,16 @@ Route::group(['middleware' => ['can:manage app']], function () {
 
     Route::get('/admin/pass', [AdminPassController::class, 'index'])->name('admin.pass.index');
     Route::get('/admin/pass/{id}', [AdminPassController::class, 'show'])->name('admin.pass.show');
+
+    Route::get('admin/semesters', [SemesterController::class, 'index'])->name('admin.semesters.index');
+    Route::get('admin/semesters/create', [SemesterController::class, 'create'])->name('admin.semesters.create');
+    Route::post('admin/semesters', [SemesterController::class, 'store'])->name('admin.semesters.store');
+    // Note: The resource route also includes a 'show' method (GET /semesters/{semester})
+    // but your SemesterController currently doesn't implement it.
+    // If you need a detailed view for a single semester, you would add a show() method to SemesterController.
+    // Route::get('semesters/{semester}', [SemesterController::class, 'show'])->name('semesters.show');
+    Route::get('semesters/{semester}/edit', [SemesterController::class, 'edit'])->name('admin.semesters.edit');
+    Route::post('semesters/{semester}/set-active', [SemesterController::class, 'setActive'])->name('admin.semesters.set-active');
 });
 
 require __DIR__ . '/auth.php';

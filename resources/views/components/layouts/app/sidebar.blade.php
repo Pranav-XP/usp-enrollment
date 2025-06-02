@@ -56,6 +56,11 @@
                         :current="request()->routeIs('admin.pass.index')" 
                         wire:navigate>{{ __('Special Pass Applications') }}</flux:navlist.item>
 
+                        <flux:navlist.item icon="calendar" 
+                        :href="route('admin.semesters.index')" 
+                        :current="request()->routeIs('admin.semesters.index')" 
+                        wire:navigate>{{ __('Manage Semester') }}</flux:navlist.item>
+
                         
                         {{-- <flux:navlist.item icon="list-bullet" :href="route('course.create')" :current="request()->routeIs('course.create')" wire:navigate>{{ __('Manage courses') }}</flux:navlist.item> --}}
                         @endhasrole
