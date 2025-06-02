@@ -1,6 +1,6 @@
 <?php
 
-use App\Aspects\LoggerAspect;
+
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -11,15 +11,16 @@ use App\Http\Controllers\EnrolmentController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminGraduationController;
+use App\Http\Controllers\AdminPassController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\GradeRecheckAdminController;
 use App\Http\Controllers\GradeRecheckStudentController;
 use App\Http\Controllers\GraduationApplicationController;
+use App\Http\Controllers\SpecialPassApplicationController;
 use App\Http\Controllers\StudentHoldController;
 use App\Http\Controllers\StudentHoldViewController;
 use App\Http\Controllers\TransactionController;
-use App\Mail\MyTestEmail;
-use Illuminate\Support\Facades\Mail;
+
 
 
 Route::middleware(['auth', 'verified', 'role:student|admin', 'check-hold'])->group(function () {
@@ -42,6 +43,9 @@ Route::middleware(['auth', 'verified', 'role:student', 'check-hold'])->group(fun
 
     Route::get('/graduation', [GraduationApplicationController::class, 'create'])->name('graduation.create');
     Route::post('/graduation', [GraduationApplicationController::class, 'store'])->name('graduation.store');
+
+    Route::get('/pass', [SpecialPassApplicationController::class, 'create'])->name('pass.create');
+    Route::post('/pass', [SpecialPassApplicationController::class, 'store'])->name('pass.store');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -75,6 +79,9 @@ Route::group(['middleware' => ['can:manage app']], function () {
 
     Route::get('/admin/graduation', [AdminGraduationController::class, 'index'])->name('admin.graduation.index');
     Route::get('/admin/graduation/{id}', [AdminGraduationController::class, 'show'])->name('admin.graduation.show');
+
+    Route::get('/admin/pass', [AdminPassController::class, 'index'])->name('admin.pass.index');
+    Route::get('/admin/pass/{id}', [AdminPassController::class, 'show'])->name('admin.pass.show');
 });
 
 require __DIR__ . '/auth.php';

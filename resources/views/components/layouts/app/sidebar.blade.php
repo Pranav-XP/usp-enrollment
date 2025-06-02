@@ -22,6 +22,7 @@
                         <flux:navlist.item icon="currency-dollar" :href="route('transactions')" :current="request()->routeIs('transactions')" wire:navigate>{{ __('My Fees') }}</flux:navlist.item>
                         <flux:navlist.item icon="lock-closed" :href="route('student.holds')" :current="request()->routeIs('student.holds')" wire:navigate>{{ __('My Holds') }}</flux:navlist.item>
                         <flux:navlist.item icon="academic-cap" :href="route('graduation.create')" :current="request()->routeIs('graduation.create')" wire:navigate>{{ __('Graduation Application') }}</flux:navlist.item>
+                        <flux:navlist.item icon="academic-cap" :href="route('pass.create')" :current="request()->routeIs('pass.create')" wire:navigate>{{ __('Special Pass Application') }}</flux:navlist.item>
                         @endhasrole
                         
                         {{-- Admin Navigation Links --}}
@@ -49,6 +50,8 @@
                         :href="route('admin.graduation.index')" 
                         :current="request()->routeIs('admin.graduation.index')" 
                         wire:navigate>{{ __('Graduation Applications') }}</flux:navlist.item>
+
+                        
                         {{-- <flux:navlist.item icon="list-bullet" :href="route('course.create')" :current="request()->routeIs('course.create')" wire:navigate>{{ __('Manage courses') }}</flux:navlist.item> --}}
                         @endhasrole
                     </flux:navlist.group>
