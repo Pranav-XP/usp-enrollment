@@ -15,7 +15,11 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
         "livewire/flux": "^2.0",
+<<<<<<< HEAD
+        "spatie/laravel-pdf": "^1.5",
+=======
         "okapi/aop": "^1.2",
+>>>>>>> origin/main
         "spatie/laravel-permission": "^6.16",
         "zircote/swagger-php": "^5.0"
     },

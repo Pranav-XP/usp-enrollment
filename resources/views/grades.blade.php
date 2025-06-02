@@ -1,6 +1,14 @@
 <x-layouts.app :title="__('Your Grades')">
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
-        <flux:heading size="xl">Your Academic Grades</flux:heading>
+        <div class="flex justify-between items-center">
+            <flux:heading size="xl">Your Academic Grades</flux:heading>
+            {{-- Download PDF Button --}}
+            @if(!$student->courses->isEmpty())
+                <a href="{{ route('student.grades.download') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+                    Download Report
+                </a>
+            @endif
+        </div>
         <flux:subheading>View your completed course grades and GPA here.</flux:subheading>
 
         {{-- Success Message --}}
