@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Aspects\LoggerAspect;
 use App\Enums\GradeRecheckStatus;
 use App\Models\Student;
 use Illuminate\Support\Facades\Auth;
 
 class GradeController extends Controller
 {
+
+    #[LoggerAspect]
     public function index()
     {
         $userId = Auth::id();

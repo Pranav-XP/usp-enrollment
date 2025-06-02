@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Aspects\LoggerAspect;
 use App\Enums\EnrolmentStatus;
 use App\Enums\GradeRecheckStatus;
 use App\Mail\RecheckApplicationSubmittedMail;
@@ -59,6 +60,7 @@ class GradeRecheckStudentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
+    #[LoggerAspect]
     public function store(Request $request)
     {
         $student = Student::where('user_id', Auth::id())->firstOrFail();

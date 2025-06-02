@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Aspects\LoggerAspect;
 use App\Enums\GradeRecheckStatus;
 use App\Mail\RecheckApplicationStatusUpdatedMail;
 use App\Mail\RecheckApplicationSubmittedMail;
@@ -48,6 +49,7 @@ class GradeRecheckAdminController extends Controller
      * @param  int  $id The ID of the GradeRecheckApplication.
      * @return \Illuminate\Http\RedirectResponse
      */
+    #[LoggerAspect]
     public function updateStatus(Request $request, int $id)
     {
         $application = GradeRecheckApplication::findOrFail($id);

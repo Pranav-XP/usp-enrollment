@@ -8,7 +8,7 @@ use App\Aspects\LoggerAspect;
 use Illuminate\Support\Facades\Log;
 
 #[LoggerAspect]
-class Logout
+class Logout__AopProxied
 {
     /**
      * Log the current user out of the application.
@@ -25,3 +25,5 @@ class Logout
         return redirect('/');
     }
 }
+
+include_once '/Users/pranav/Code/usp-enrollment/cache/aop/woven/app/Livewire/Actions/Logout.php';
