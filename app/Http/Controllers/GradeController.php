@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Aspects\LoggerAspect;
 use App\Enums\GradeRecheckStatus;
+use App\Models\CourseStudent;
+use App\Models\Student;
 use Spatie\LaravelPdf\Facades\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
