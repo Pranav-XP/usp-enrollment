@@ -1,6 +1,6 @@
 <x-layouts.app :title="__('Recheck Application Details')">
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
-        <flux:heading size="xl">Recheck Application Details</flux:heading>
+        <flux:heading size="xl">Grade Recheck Application Details</flux:heading>
         <flux:subheading>Review and update the status of this grade reconsideration application.</flux:subheading>
 
         {{-- Success/Error/Info Messages --}}
