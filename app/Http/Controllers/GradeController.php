@@ -2,22 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\GradeRecheckStatus;
 use App\Models\Student;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class GradeController extends Controller
 {
     public function index()
     {
+        $userId = Auth::id();
 
-        // Get the authenticated user
-        $id = Auth::id();
-
-        // Retrieve the student based on the authenticated user's ID
-        $student = Student::where('user_id', $id)->first();
-        // Fetch student and their courses with grades
-        $student = Student::with('courses')->findOrFail($student->id);
+        // Eager load 'courses' and 'recheckApplications'.
+        // For recheckApplications, only fetch those with a 'pending' status.
+        $student = Student::where('user_id', $userId)
+            ->with([
+                'courses',
+                'recheckApplications' => function ($query) {
+                    $query->where('status', GradeRecheckStatus::PENDING->value);
+                }
+            ])
+            ->firstOrFail();
 
         return view('grades', compact('student'));
     }

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\EnrolmentStatus;
+use App\Enums\EnrolmentStatus;
 use App\Models\User;
 use App\Models\Student;
 use App\Models\Program;

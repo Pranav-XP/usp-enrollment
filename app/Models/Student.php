@@ -97,4 +97,13 @@ class Student extends Model
         // Fallback to query if not eager loaded
         return $this->holds()->active()->first();
     }
+
+    /**
+     * Relationship with GradeRecheckApplication (One-to-Many).
+     * @return HasMany
+     */
+    public function recheckApplications(): HasMany
+    {
+        return $this->hasMany(GradeRecheckApplication::class);
+    }
 }

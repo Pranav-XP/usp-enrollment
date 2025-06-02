@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\EnrolmentStatus;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Course;
-use App\EnrolmentStatus;
+
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller

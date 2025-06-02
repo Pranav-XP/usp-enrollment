@@ -10,6 +10,7 @@ use App\Http\Controllers\EnrolmentController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GradeController;
+use App\Http\Controllers\GradeRecheckStudentController;
 use App\Http\Controllers\StudentHoldController;
 use App\Http\Controllers\StudentHoldViewController;
 use App\Http\Controllers\TransactionController;
@@ -29,7 +30,11 @@ Route::middleware(['auth', 'verified', 'role:student|admin', 'check-hold'])->gro
 
 Route::middleware(['auth', 'verified', 'role:student', 'check-hold'])->group(function () {
     Route::post('/enrol/{courseId}', [EnrolmentController::class, 'enrolStudent'])->name('enrol.course');
-    Route::get('grades', [GradeController::class, 'index'])->name('grades');
+    Route::get('/grades', [GradeController::class, 'index'])->name('grades');
+
+    Route::get('/grades/{courseId}/recheck', [GradeRecheckStudentController::class, 'create'])->name('recheck.create');
+    Route::post('/grades/recheck', [GradeRecheckStudentController::class, 'store'])
+        ->name('recheck.store');
     Route::get('courses', [CourseController::class, 'index'])->name('courses');
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions');
 });
