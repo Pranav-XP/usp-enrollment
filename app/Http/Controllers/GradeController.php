@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Aspects\LoggerAspect;
 use App\Enums\GradeRecheckStatus;
 use App\Models\CourseStudent;
+use App\Models\Semester;
 use App\Models\Student;
 use Spatie\LaravelPdf\Facades\Pdf;
 use Illuminate\Http\Request;
@@ -68,10 +69,12 @@ class GradeController extends Controller
 
         $gpa = $gradedCoursesCount > 0 ? $totalGradePoints / $gradedCoursesCount : 0;
 
-        $now = Carbon::now()->format('d F Y, h:i A');
+        $now = Carbon::now('Pacific/Fiji')->format('d F Y, h:i A');
+
+        $activeSemester = Semester::where('is_active', true)->first();
 
         // Pass both student data and the course-student records to the PDF view
-        return Pdf::view('grade-report', compact('student', 'completedCourseStudents', 'gpa', 'now'))
+        return Pdf::view('grade-report', compact('student', 'completedCourseStudents', 'gpa', 'now', 'activeSemester'))
             ->name('grade_report_' . $student->student_id . '_' . Carbon::now()->format('YmdHis') . '.pdf')
             ->download();
     }

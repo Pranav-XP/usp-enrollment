@@ -10,9 +10,11 @@ use App\Livewire\Auth\Register;
 use App\Http\Controllers\EnrolmentController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminGraduationController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\GradeRecheckAdminController;
 use App\Http\Controllers\GradeRecheckStudentController;
+use App\Http\Controllers\GraduationApplicationController;
 use App\Http\Controllers\StudentHoldController;
 use App\Http\Controllers\StudentHoldViewController;
 use App\Http\Controllers\TransactionController;
@@ -32,11 +34,14 @@ Route::middleware(['auth', 'verified', 'role:student', 'check-hold'])->group(fun
 
     Route::post('/grades/recheck', [GradeRecheckStudentController::class, 'store'])
         ->name('recheck.store');
-        
+
     Route::get('/grades/download', [GradeController::class, 'download'])->name('student.grades.download');
 
     Route::get('courses', [CourseController::class, 'index'])->name('courses');
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions');
+
+    Route::get('/graduation', [GraduationApplicationController::class, 'create'])->name('graduation.create');
+    Route::post('/graduation', [GraduationApplicationController::class, 'store'])->name('graduation.store');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -67,6 +72,9 @@ Route::group(['middleware' => ['can:manage app']], function () {
     Route::get('/admin/recheck/{id}', [GradeRecheckAdminController::class, 'show'])->name('admin.recheck.show');
     Route::put('/admin/recheck/{id}/update', [GradeRecheckAdminController::class, 'updateStatus'])->name('admin.recheck.update');
     Route::get('/admin/recheck/{applicationId}/download', [GradeRecheckAdminController::class, 'downloadPaymentConfirmation'])->name('admin.recheck.download');
+
+    Route::get('/admin/graduation', [AdminGraduationController::class, 'index'])->name('admin.graduation.index');
+    Route::get('/admin/graduation/{id}', [AdminGraduationController::class, 'show'])->name('admin.graduation.show');
 });
 
 require __DIR__ . '/auth.php';

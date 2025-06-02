@@ -91,16 +91,16 @@
 
     <div class="header">
         <p><strong>{{ $student->first_name }} {{ $student->last_name }}</strong></p>
-        <p>P O Box {{ $student->postal_box ?? '9968' }}</p>
-        <p>Nadi Airport, Fiji</p>
+        {{-- Fill in PO Box from student data --}}
+        <p>{{ $student->postal_address ?? '9968' }}</p> 
         <br>
-        <p><strong>Our Ref:</strong> {{ $student->student_id }}</p>
+        <p><strong>Student ID:</strong> {{ $student->student_id }}</p>
         <p><strong>Campus:</strong> {{ $student->campus ?? 'Laucala' }}</p>
     </div>
 
     <div class="student-info">
         <p><strong>Program:</strong> {{ $student->program->name ?? 'Bach of Software Engineering' }}</p>
-        <p><strong>Semester:</strong> Semester 2 2024</p>
+        <p><strong>Semester:</strong> {{ $activeSemester->name ?? 'N/A' }}</p>
     </div>
 
     <table>
@@ -114,29 +114,26 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($student->courses as $course)
-                @if($course->pivot->status == "completed" && $course->pivot->grade !== null)
+            {{-- Loop through completedCourseStudents as passed from the controller --}}
+            @foreach($completedCourseStudents as $csRecord)
+                {{-- Only display completed courses with a grade --}}
+                @if($csRecord->grade !== null)
                 <tr>
-                    <td>{{ $course->course_code }}</td>
-                    <td>{{ $course->course_title }}</td>
-                    <td>{{ number_format($course->pivot->grade, 1) }}</td>
-                    <td>{{ $course->pivot->letter_grade }}</td>
-                    <td>{{ $course->pivot->campus ?? 'L' }}</td>
+                    <td>{{ $csRecord->course->course_code }}</td>
+                    <td>{{ $csRecord->course->course_title }}</td>
+                   
+                    <td>{{ number_format($csRecord->grade, 1) }}</td>
+                    <td>{{ $csRecord->letter_grade }}</td>
+                    <td>{{ $csRecord->campus ?? 'L' }}</td>
                 </tr>
                 @endif
-                @if($course->pivot->status == "in progress")
-                <tr>
-                    <td>{{ $course->course_code }}</td>
-                    <td>{{ $course->course_title }}</td>
-                    <td colspan="3">In Progress</td>
-                </tr>
-                @endif
+                {{-- Removed the 'In Progress' block as this report typically focuses on graded courses --}}
             @endforeach
         </tbody>
     </table>
 
     <div class="right">
-        <p><strong>Date:</strong> {{ \Carbon\Carbon::now()->format('d/m/Y') }}</p>
+        <p><strong>Date:</strong> {{ \Carbon\Carbon::parse($now)->format('d F Y') }}</p> {{-- Using the $now variable passed from controller, formatted for report --}}
     </div>
 
     <div class="notes">

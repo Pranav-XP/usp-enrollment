@@ -20,7 +20,8 @@
                         <flux:navlist.item icon="list-bullet" :href="route('courses')" :current="request()->routeIs('courses')" wire:navigate>{{ __('Courses') }}</flux:navlist.item>
                         <flux:navlist.item icon="clipboard-document-check" :href="route('grades')" :current="request()->routeIs('grades')" wire:navigate>{{ __('My Grades') }}</flux:navlist.item>
                         <flux:navlist.item icon="currency-dollar" :href="route('transactions')" :current="request()->routeIs('transactions')" wire:navigate>{{ __('My Fees') }}</flux:navlist.item>
-                        <flux:navlist.item icon="lock-closed" :href="route('student.holds')" :current="request()->routeIs('student.holds`')" wire:navigate>{{ __('My Holds') }}</flux:navlist.item>
+                        <flux:navlist.item icon="lock-closed" :href="route('student.holds')" :current="request()->routeIs('student.holds')" wire:navigate>{{ __('My Holds') }}</flux:navlist.item>
+                        <flux:navlist.item icon="academic-cap" :href="route('graduation.create')" :current="request()->routeIs('graduation.create')" wire:navigate>{{ __('Graduation Application') }}</flux:navlist.item>
                         @endhasrole
                         
                         {{-- Admin Navigation Links --}}
@@ -39,10 +40,15 @@
                         :current="request()->routeIs('admin.students')" 
                         wire:navigate>{{ __('Manage Students') }}</flux:navlist.item>
 
-                        <flux:navlist.item icon="pencil" 
+                        <flux:navlist.item icon="clipboard-document-check" 
                         :href="route('admin.recheck.index')" 
                         :current="request()->routeIs('admin.recheck.index')" 
                         wire:navigate>{{ __('Grade Recheck') }}</flux:navlist.item>
+
+                        <flux:navlist.item icon="academic-cap" 
+                        :href="route('admin.graduation.index')" 
+                        :current="request()->routeIs('admin.graduation.index')" 
+                        wire:navigate>{{ __('Graduation Applications') }}</flux:navlist.item>
                         {{-- <flux:navlist.item icon="list-bullet" :href="route('course.create')" :current="request()->routeIs('course.create')" wire:navigate>{{ __('Manage courses') }}</flux:navlist.item> --}}
                         @endhasrole
                     </flux:navlist.group>
