@@ -15,7 +15,6 @@ USPEnrol is a web application designed to streamline enrollment services for stu
 
 **For Administrators:**
 * **User Management:** (Assumed) Ability to manage student and administrator accounts.
-* **Course Management:** (Assumed) Ability to add, edit, and remove courses.
 * **Application Review:** (Assumed) Process and manage student applications.
 * **Grade Management:** (Assumed) Functionality to manage student grades.
 
