@@ -36,6 +36,9 @@ Route::middleware(['auth', 'verified', 'role:student', 'check-hold'])->group(fun
     Route::get('/grades/{courseId}/recheck', [GradeRecheckStudentController::class, 'create'])->name('recheck.create');
     Route::post('/grades/recheck', [GradeRecheckStudentController::class, 'store'])
         ->name('recheck.store');
+        
+    Route::get('/grades/download', [GradeController::class, 'download'])->name('student.grades.download');
+
     Route::get('courses', [CourseController::class, 'index'])->name('courses');
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions');
 });
